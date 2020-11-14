@@ -1,0 +1,22 @@
+.chat-error {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.chat-error__container {
+  width: 108rem;
+  margin: 0 auto;
+}
+
+.chat-error__title {
+  font-size: 4.8rem;
+  margin: 0;
+}
+
+.chat-error__text {
+  font-size: 1.6rem;
+  margin: 0;
+  margin-bottom: 1rem;
+}
