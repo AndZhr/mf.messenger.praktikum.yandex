@@ -16,7 +16,11 @@
 }
 
 .chat-error__text {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   margin: 0;
   margin-bottom: 1rem;
+}
+
+.chat-error__link {
+  font-size: 1.8rem;
 }
