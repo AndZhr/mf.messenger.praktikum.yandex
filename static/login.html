@@ -16,10 +16,17 @@
           <form class="chat-auth__form">
 
             <div class="chat-auth__form-column">
-              <label>Логин</label>
-              <input type="text" name="login">
-              <label>Пароль</label>
-              <input type="password" name="password">
+              <div class="chat-auth__form-input">
+                <label>Логин</label>
+                <input type="text" name="login">
+                <div class="chat-auth__form-invalid" hidden>Укажите логин</div>
+              </div>
+              <div class="chat-auth__form-input">
+                <label>Пароль</label>
+                <input type="password" name="password">
+                <div class="chat-auth__form-invalid" hidden>Укажите пароль</div>
+              </div>
+
               <button type="submit">Войти</button>
               <div class="chat-auth__form-link">
                 <a class="chat-link" href="register.html">Регистрация</a>

@@ -16,23 +16,45 @@
           <form class="chat-auth__form">
 
             <div class="chat-auth__form-column">
-              <label>Почта</label>
-              <input type="text" name="email">
-              <label>Логин</label>
-              <input type="text" name="login">
-              <label>Имя</label>
-              <input type="text" name="first_name">
-              <label>Фамилия</label>
-              <input type="text" name="second_name">
+              <div class="chat-auth__form-input">
+                <label>Почта</label>
+                <input type="text" name="email">
+                <div class="chat-auth__form-invalid" hidden>Укажите почту</div>
+              </div>
+              <div class="chat-auth__form-input">
+                <label>Логин</label>
+                <input type="text" name="login">
+                <div class="chat-auth__form-invalid" hidden>Укажите логин</div>
+              </div>
+              <div class="chat-auth__form-input">
+                <label>Имя</label>
+                <input type="text" name="first_name">
+                <div class="chat-auth__form-invalid" hidden>Укажите имя</div>
+              </div>
+              <div class="chat-auth__form-input">
+                <label>Фамилия</label>
+                <input type="text" name="second_name">
+                <div class="chat-auth__form-invalid" hidden>Укажите фамилию</div>
+              </div>
             </div>
 
             <div class="chat-auth__form-column">
-              <label>Телефон</label>
-              <input type="text" name="phone">
-              <label>Пароль</label>
-              <input type="password" name="password">
-              <label>Пароль (ещё раз)</label>
-              <input type="password" name="password-confirm">
+              <div class="chat-auth__form-input">
+                <label>Телефон</label>
+                <input type="text" name="phone">
+                <div class="chat-auth__form-invalid" hidden>Укажите телефон</div>
+              </div>
+              <div class="chat-auth__form-input">
+                <label>Пароль</label>
+                <input type="password" name="password">
+                <div class="chat-auth__form-invalid" hidden>Укажите пароль</div>
+              </div>
+              <div class="chat-auth__form-input">
+                <label>Пароль (ещё раз)</label>
+                <input type="password" name="password_confirm">
+                <div class="chat-auth__form-invalid" hidden>Укажите пароль, ещё раз</div>
+              </div>
+
               <button type="submit">Зарегистрироваться</button>
               <div class="chat-auth__form-link">
                 <a class="chat-link" href="login.html">Вход</a>
