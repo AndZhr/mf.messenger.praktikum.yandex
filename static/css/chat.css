@@ -31,18 +31,26 @@
   font-weight: 600;
 }
 
+.chat-list__search-input {
+  position: relative;
+}
+
+.chat-list__search-input span {
+  font-size: 1.6rem;
+  padding: 1.1rem 0;
+  color: #8D99AE;
+  position: absolute;
+  left: 1rem;
+}
+
 .chat-list__search-input input {
   width: 100%;
   border: 0;
   font-size: 1.6rem;
-  padding: 1rem 1.5rem;
+  padding: 1rem 1.5rem 1rem 3rem;
   border-radius: .6rem;
   background-color: #F3F4F7;
   box-sizing: border-box;
-}
-
-.chat-list__search-input input:focus {
-  outline: 0;
 }
 
 .chat-list__body {
@@ -116,6 +124,10 @@
   color: #8D99AE;
 }
 
+.chat-list-item__message-you {
+  color: #353535;
+}
+
 .chat-list-item__count {
   width: 2.2rem;
   height: 2.2rem;
@@ -130,6 +142,7 @@
 }
 
 .chat-body {
+  margin-left: 3rem;
   flex: 0 1 100%;
 }
 
@@ -143,4 +156,222 @@
 
 .chat-body__placeholder p {
   font-size: 1.6rem;
+}
+
+.chat-body__message-feed {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.message-feed__tooltip {
+  position: absolute;
+  padding: 0 1.5rem;
+  background-color: #FFFFFF;
+  box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, .15);
+  border-radius: 5px;
+  font-size: 1.6rem;
+}
+
+.message-feed__tooltip ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.message-feed__tooltip li {
+  padding: 1rem 0;
+  border-bottom: 1px solid #F3F4F7;
+}
+
+.message-feed__tooltip li:last-child {
+  border-bottom: none;
+}
+
+.message-feed__tooltip button {
+  white-space: nowrap;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.message-feed__tooltip span {
+  font-size: 1.8rem;
+  width: 2rem;
+  margin-right: .5rem;
+  color: #6995E0;
+}
+
+.message-feed__header {
+  height: 7rem;
+  flex-shrink: 0;
+  border-bottom: 1px solid #F3F4F7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.message-feed__avatar-img {
+  width: 5rem;
+  height: 5rem;
+}
+
+.message-feed__avatar-name {
+  font-size: 1.8rem;
+}
+
+.message-feed__header-menu {
+  position: relative;
+}
+
+.message-feed__header-tooltip {
+  top: 3rem;
+  right: 0;
+}
+
+.message-feed__header-menu > button {
+  font-size: 2.4rem;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  color: #8D99AE;
+  cursor: pointer;
+}
+
+.message-feed__main {
+  flex: 0 1 100%;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.message-feed-main__container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem .5rem 0;
+}
+
+.message-feed-main__row {
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+
+.message-feed-main__row.message-feed-main__row_left {
+  justify-content: flex-start;
+}
+
+.message-feed-main__row_left .message-feed__message-block {
+  background-color: #FFFFFF;
+  border-radius: .6rem .6rem .6rem 0;
+}
+
+.message-feed-main__row.message-feed-main__row_right {
+  justify-content: flex-end;
+}
+
+.message-feed-main__row_right .message-feed__message-block {
+  background-color: #6995E0;
+  color: #FFFFFF;
+  border-radius: .6rem .6rem 0 .6rem;
+}
+
+.message-feed__message-block {
+  display: flex;
+  flex-direction: column;
+  max-width: 40%;
+  font-size: 1.6rem;
+  padding: 1rem 1.5rem .5rem 1.5rem;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, .2);
+}
+
+.message-feed__message-block-text {
+  white-space: pre-line;
+}
+
+.message-feed__message-block-image {
+  width: 34rem;
+  max-height: 21rem;
+  border-radius: .5rem;
+  margin-top: .5rem;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.message-feed__message-block-image img {
+  width: 100%;
+}
+
+.message-feed__message-block-time {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 1.4rem;
+}
+
+.message-feed__message-block-status {
+  font-size: 1.4rem;
+  margin-left: .5rem;
+}
+
+.message-feed__footer {
+  height: 6.5rem;
+  flex-shrink: 0;
+  border-top: 1px solid #F3F4F7;
+  display: flex;
+  align-items: center;
+}
+
+.message-feed__footer-menu {
+  position: relative;
+}
+
+.message-feed__footer-menu > button {
+  font-size: 2.8rem;
+  margin: 0;
+  padding: .6rem 0;
+  background-color: transparent;
+  border: 0;
+  color: #8D99AE;
+  cursor: pointer;
+}
+
+.message-feed__footer-tooltip {
+  bottom: 4rem;
+  left: 0;
+}
+
+.message-feed__footer-input {
+  flex: 0 1 100%;
+  font-size: 1.6rem;
+  line-height: 2rem;
+  border-radius: .6rem;
+  margin: 0 1.5rem;
+  padding: 1rem 1.5rem;
+  border: 0;
+  background-color: #F3F4F7;
+}
+
+.message-feed__footer-send-btn {
+  width: 4rem;
+  height: 4rem;
+  flex-shrink: 0;
+  background-color: #6995E0;
+  color: #FFFFFF;
+  font-size: 2rem;
+  border-radius: .6rem;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }

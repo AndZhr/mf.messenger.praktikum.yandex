@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/icon-font.css">
     <title>Мессенджер</title>
   </head>
   <body>
@@ -17,6 +18,7 @@
               <a class="chat-link" href="profile.html">Профиль</a>
             </div>
             <div class="chat-list__search-input">
+              <span class="icon icon-search-solid"></span>
               <input type="text" placeholder="Поиск">
             </div>
           </div>
@@ -111,7 +113,7 @@
                   <div class="chat-list-item__time">Чт</div>
                 </div>
                 <div class="chat-list-item__text">
-                  <div class="chat-list-item__message"><span>Вы: </span>Придумаем что-нибудь)</div>
+                  <div class="chat-list-item__message"><span class="chat-list-item__message-you">Вы: </span>Придумаем что-нибудь)</div>
                 </div>
               </div>
             </div>
@@ -126,7 +128,7 @@
                   <div class="chat-list-item__time">Чт</div>
                 </div>
                 <div class="chat-list-item__text">
-                  <div class="chat-list-item__message"><span>Вы: </span>Скоро буду</div>
+                  <div class="chat-list-item__message"><span class="chat-list-item__message-you">Вы: </span>Скоро буду</div>
                 </div>
               </div>
             </div>
@@ -149,11 +151,162 @@
           </div>
         </div>
         <div class="chat-body">
-          <div class="chat-body__placeholder">
+          <div class="chat-body__message-feed message-feed">
+            <div class="message-feed__header">
+              <div class="message-feed__avatar chat-avatar">
+                <div class="message-feed__avatar-img chat-avatar__img">
+                  <span>Р</span>
+                </div>
+                <div class="message-feed__avatar-name chat-avatar__name">
+                  Роман
+                </div>
+              </div>
+
+              <div class="message-feed__header-menu">
+                <button class="icon icon-ellipsis-h-solid"></button>
+                <div class="message-feed__header-tooltip message-feed__tooltip">
+                  <ul>
+                    <li>
+                      <button>
+                        <span class="icon icon-plus-circle-solid"></span>
+                        Добавить пользователя
+                      </button>
+                    </li>
+                    <li>
+                      <button>
+                        <span class="icon icon-minus-circle-solid"></span>
+                        Удалить пользователя
+                      </button>
+                    </li>
+                    <li>
+                      <button>
+                        <span class="icon icon-trash-alt-solid"></span>
+                        Удалить чат
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="message-feed__main message-feed-main">
+              <div class="message-feed-main__container">
+                <div class="message-feed-main__row message-feed-main__row_left">
+                  <div class="message-feed__message-block">
+                    <div class="message-feed__message-block-text">Мы уже на месте, остановились примерно в 10 км от трассы М95, здесь очень крутое место
+                      Мы сейчас перекусим и немного прогуляемся здесь, будем ждать тебя
+                    </div>
+                    <div class="message-feed__message-block-time">
+                      <span>19:23</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="message-feed-main__row message-feed-main__row_left">
+                  <div class="message-feed__message-block">
+                    <div class="message-feed__message-block-image">
+                      <img src="images/message-img.jpg" alt="">
+                    </div>
+                    <div class="message-feed__message-block-time">
+                      <span>19:24</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="message-feed-main__row message-feed-main__row_right">
+                  <div class="message-feed__message-block">
+                    <div class="message-feed__message-block-text">Скоро буду</div>
+                    <div class="message-feed__message-block-time">
+                      <span>19:26</span>
+                      <span class="message-feed__message-block-status icon icon-angle-double-right-solid"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="message-feed__footer">
+              <div class="message-feed__footer-menu">
+                <button class="icon icon-paperclip-solid"></button>
+
+                <div class="message-feed__footer-tooltip message-feed__tooltip">
+                  <ul>
+                    <li>
+                      <button>
+                        <span class="icon icon-images-solid"></span>
+                        Фото или Видео
+                      </button>
+                    </li>
+                    <li>
+                      <button>
+                        <span class="icon icon-file-solid"></span>
+                        Файл
+                      </button>
+                    </li>
+                    <li>
+                      <button>
+                        <span class="icon icon-map-marked-alt-solid"></span>
+                        Локация
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <input class="message-feed__footer-input" type="text" name="message" placeholder="Введите сообщение...">
+
+              <button class="message-feed__footer-send-btn icon icon-arrow-right-solid"></button>
+            </div>
+          </div>
+
+          <div class="chat-body__placeholder" style="display: none">
             <p>Выберите чат чтобы начать общение</p>
           </div>
         </div>
       </div>
     </main>
+
+    <div class="chat-popup">
+      <div class="chat-popup__box">
+        <h3 class="chat-title">Добавить пользователя</h3>
+        <form>
+          <div class="chat-input">
+            <label class="chat-input__label">Логин</label>
+            <input class="chat-input__input" type="text" name="login">
+            <div class="chat-input__invalid" hidden>Укажите логин</div>
+          </div>
+          <button class="chat-main-btn" type="submit">Добавить</button>
+        </form>
+      </div>
+
+      <div class="chat-popup__box" hidden>
+        <h3 class="chat-title">Удалить пользователя</h3>
+        <form>
+          <div class="chat-input">
+            <label class="chat-input__label">Логин</label>
+            <input class="chat-input__input" type="text" name="login">
+            <div class="chat-input__invalid" hidden>Укажите логин</div>
+          </div>
+          <button class="chat-main-btn" type="submit">Удалить</button>
+        </form>
+      </div>
+
+      <div class="chat-popup__box" hidden>
+        <h3 class="chat-title">Вы действительно хотите удалить чат?</h3>
+        <div>
+          <button class="chat-main-btn">Отмена</button>
+        </div>
+        <div>
+          <button class="chat-warning-btn">Удалить</button>
+        </div>
+      </div>
+
+      <div class="chat-popup__box" hidden>
+        <h3 class="chat-title">Загрузите файл</h3>
+        <div class="chat-input chat-file-input">
+          <label for="file-input">Выберете файл на компьютере</label>
+          <input id="file-input" type="file">
+        </div>
+        <button class="chat-main-btn" type="submit">Загрузить</button>
+      </div>
+    </div>
   </body>
 </html>
