@@ -13,7 +13,7 @@
       <div class="chat-auth">
         <div class="chat-auth__container tile-block">
           <h3 class="chat-title">Регистрация</h3>
-          <form class="chat-auth__form chat-form">
+          <form id="register-form" class="chat-auth__form chat-form">
 
             <div class="chat-form__column">
               <div class="chat-auth__form-input chat-input">
@@ -54,8 +54,9 @@
                 <input class="chat-input__input" type="password" name="password_confirm">
                 <div class="chat-input__invalid" hidden>Укажите пароль, ещё раз</div>
               </div>
-
-              <button class="chat-main-btn" type="submit">Зарегистрироваться</button>
+              <div class="chat-form__btn">
+                <button class="chat-main-btn" type="submit">Зарегистрироваться</button>
+              </div>
               <div class="chat-auth__form-link">
                 <a class="chat-link" href="login.html">Вход</a>
               </div>
@@ -65,5 +66,6 @@
         </div>
       </div>
     </main>
+    <script src="js/register.js"></script>
   </body>
 </html>

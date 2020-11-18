@@ -343,20 +343,27 @@
   cursor: pointer;
 }
 
+.message-feed__footer-form {
+  flex: 0 1 100%;
+  display: flex;
+  align-items: center;
+}
+
 .message-feed__footer-tooltip {
   bottom: 4rem;
   left: 0;
 }
 
 .message-feed__footer-input {
+  height: 2rem;
   flex: 0 1 100%;
   font-size: 1.6rem;
-  line-height: 2rem;
   border-radius: .6rem;
   margin: 0 1.5rem;
   padding: 1rem 1.5rem;
   border: 0;
   background-color: #F3F4F7;
+  resize: none;
 }
 
 .message-feed__footer-send-btn {

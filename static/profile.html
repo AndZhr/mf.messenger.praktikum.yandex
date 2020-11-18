@@ -20,7 +20,7 @@
             <div class="chat-profile__avatar-name chat-avatar__name">Михаил Мячин</div>
           </div>
 
-          <div class="chat-form">
+          <form id="profile-form" class="chat-form">
 
             <div class="chat-form__column">
               <div class="chat-input">
@@ -38,8 +38,15 @@
                 <input class="chat-input__input" type="text" name="login" disabled value="mishamachin">
                 <div class="chat-input__invalid" hidden>Укажите логин</div>
               </div>
-              <button class="chat-main-btn" type="submit">Изменить данные</button>
-              <button class="chat-warning-btn" type="submit">Выйти</button>
+              <div class="chat-form__btn" hidden>
+                <button class="chat-main-btn" type="submit">Сохранить</button>
+              </div>
+              <div class="chat-form__btn">
+                <button class="chat-main-btn">Изменить данные</button>
+              </div>
+              <div class="chat-form__btn">
+                <button class="chat-warning-btn">Выйти</button>
+              </div>
             </div>
 
             <div class="chat-form__column">
@@ -58,12 +65,14 @@
                 <input class="chat-input__input" type="text" name="display_name" disabled value="Михаил">
                 <div class="chat-input__invalid" hidden>Укажите отображаемое имя</div>
               </div>
-              <button class="chat-main-btn" type="submit">Изменить пароль</button>
+              <div class="chat-form__btn">
+                <button class="chat-main-btn">Изменить пароль</button>
+              </div>
             </div>
 
-          </div>
+          </form>
 
-          <form class="chat-form" style="display: none;">
+          <form id="password-form" class="chat-form" style="display: none;">
             <div class="chat-form__column">
               <div class="chat-input">
                 <label class="chat-input__label">Старый пароль</label>
@@ -80,8 +89,9 @@
                 <input class="chat-input__input" type="password" name="new_password_confirm" value="88888888">
                 <div class="chat-input__invalid" hidden>Укажите новый пароль, ещё раз</div>
               </div>
-
-              <button class="chat-main-btn" type="submit">Сохранить</button>
+              <div class="chat-form__btn">
+                <button class="chat-main-btn" type="submit">Сохранить</button>
+              </div>
             </div>
           </form>
         </div>
@@ -95,9 +105,13 @@
           <label for="file-input">Выберете файл на компьютере</label>
           <input id="file-input" type="file">
         </div>
-        <button class="chat-main-btn" type="submit">Загрузить</button>
+        <div class="chat-popup__btn">
+          <button class="chat-main-btn" type="submit">Загрузить</button>
+        </div>
         <div class="chat-btn-invalid">Необходимо выбрать файл</div>
       </div>
     </div>
+
+    <script src="js/profile.js"></script>
   </body>
 </html>

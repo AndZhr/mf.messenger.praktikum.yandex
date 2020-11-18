@@ -16,8 +16,9 @@ body {
   margin: 0;
 }
 
-input {
+input, textarea {
   color: #353535;
+  font-family: inherit;
 }
 
 button {
@@ -28,7 +29,7 @@ input::placeholder {
   color: #8D99AE;
 }
 
-input:focus, button:focus {
+input:focus, textarea:focus, button:focus {
   outline: 0;
 }
 
@@ -48,9 +49,7 @@ input:focus, button:focus {
   padding: 1rem 1.5rem;
   font-size: 1.6rem;
   border: 0;
-  margin-top: 2rem;
   border-radius: .6rem;
-  display: block;
 }
 
 .chat-main-btn {
@@ -160,6 +159,10 @@ input:focus, button:focus {
   margin: 0;
 }
 
+.chat-form__btn {
+  padding-top: 2rem;
+}
+
 .chat-popup {
   position: fixed;
   top: 0;
@@ -177,4 +180,8 @@ input:focus, button:focus {
   padding: 1.5rem 6rem 2.5rem;
   background-color: #FFFFFF;
   border-radius: .5rem;
+}
+
+.chat-popup__btn {
+  padding-top: 2rem;
 }
