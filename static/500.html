@@ -10,13 +10,19 @@
   </head>
   <body>
     <main class="main">
-      <div class="chat-error">
-        <div class="chat-error__container">
-          <h2 class="chat-error__title">500</h2>
-          <p class="chat-error__text">Что-то пошло не так, но мы уже разбираемся</p>
-          <a class="chat-link chat-error__link" href="index.html">К списку чатов</a>
-        </div>
+      <div id="error-500" class="chat-error">
+
       </div>
     </main>
+
+    <script type="text/x-handlebars-template" id="error-500-template">
+      <div class="chat-error__container">
+        <h2 class="chat-error__title">{{ title }}</h2>
+        <p class="chat-error__text">{{ text }}</p>
+        <a class="chat-link chat-error__link" href="index.html">К списку чатов</a>
+      </div>
+    </script>
+    <script src="js/libs/handlebars.min-v4.7.6.js"></script>
+    <script src="js/pages/error-500.js" type="module"></script>
   </body>
 </html>

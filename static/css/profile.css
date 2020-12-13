@@ -45,3 +45,16 @@
 .chat-profile__avatar-btn:hover {
   opacity: 1;
 }
+
+.chat-profile__btn-container {
+  display: flex;
+}
+
+.chat-profile__btn-column {
+  flex: 0 1 50%;
+  margin-right: 2.4rem;
+}
+
+.chat-profile__btn-column:last-child {
+  margin-right: 0;
+}

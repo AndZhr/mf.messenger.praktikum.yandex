@@ -13,31 +13,34 @@
       <div class="chat-auth">
         <div class="chat-auth__container tile-block">
           <h3 class="chat-title">Вход</h3>
-          <form id="login-form" class="chat-auth__form chat-form">
-
-            <div class="chat-form__column">
-              <div class="chat-auth__form-input chat-input">
-                <label class="chat-input__label">Логин</label>
-                <input class="chat-input__input" type="text" name="login">
-                <div class="chat-input__invalid" hidden>Укажите логин</div>
-              </div>
-              <div class="chat-auth__form-input chat-input">
-                <label class="chat-input__label">Пароль</label>
-                <input class="chat-input__input" type="password" name="password">
-                <div class="chat-input__invalid" hidden>Укажите пароль</div>
-              </div>
-              <div class="chat-form__btn">
-                <button class="chat-main-btn" type="submit">Войти</button>
-              </div>
-              <div class="chat-auth__form-link">
-                <a class="chat-link" href="register.html">Регистрация</a>
-              </div>
-            </div>
+          <form id="login-form">
 
           </form>
         </div>
       </div>
     </main>
-    <script src="js/login.js"></script>
+
+    <script type="text/x-handlebars-template" id="login-template">
+
+      <div class="chat-form__column">
+        <div class="chat-auth__form-input chat-input">
+          <label class="chat-input__label">Логин</label>
+          <input class="chat-input__input" type="text" name="login">
+          <div class="chat-input__invalid hidden" data-input-name="login">Укажите логин</div>
+        </div>
+        <div class="chat-auth__form-input chat-input">
+          <label class="chat-input__label">Пароль</label>
+          <input class="chat-input__input" type="password" name="password">
+          <div class="chat-input__invalid hidden" data-input-name="password">Укажите пароль</div>
+        </div>
+        <div data-component="submit-btn" class="chat-form__btn"></div>
+        <div class="chat-auth__form-link">
+          <a class="chat-link" href="register.html">Регистрация</a>
+        </div>
+      </div>
+
+    </script>
+    <script src="js/libs/handlebars.min-v4.7.6.js"></script>
+    <script src="js/pages/login.js" type="module"></script>
   </body>
 </html>
