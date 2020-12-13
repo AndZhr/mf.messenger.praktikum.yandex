@@ -193,7 +193,10 @@ function initChatList(firstInit?: boolean) {
     if (searchInput) {
       searchInput.addEventListener('input', event => {
         let targetElem: EventTarget | null = event.target;
-        let searchValue = targetElem?.value;
+
+        if (!targetElem || !(targetElem instanceof HTMLInputElement)) return;
+
+        let searchValue = targetElem.value;
 
         if (searchValue) {
           let filterChatList = originalChatsList.filter(chat => chat.name.indexOf(searchValue) !== -1);
@@ -222,11 +225,14 @@ function initChatList(firstInit?: boolean) {
     chatList.addEventListener('click', event => {
       let targetElem: EventTarget | null = event.target;
 
-      if (!targetElem) return;
+      if (!targetElem || !(targetElem instanceof Element)) return;
 
-      let chatListItem = targetElem.closest('.chat-list__item');
+      let chatListItem: HTMLElement | null = targetElem.closest('.chat-list__item');
 
-      let selectedChat = chatListData.chatsList.find(item => item.id === chatListItem.id);
+      let selectedChat = chatListData.chatsList.find(item => {
+        if (!chatListItem) return false;
+        return item.id === chatListItem.id;
+      });
 
       if (!selectedChat) return;
 
@@ -295,9 +301,9 @@ function initChat() {
         event.stopPropagation();
         let targetElem: EventTarget | null = event.target;
 
-        if (targetElem) {
+        if (targetElem && targetElem instanceof Element) {
           dropdown.classList.remove('show');
-          let btnElem = targetElem.closest('[data-btn-action]');
+          let btnElem: HTMLElement | null = targetElem.closest('[data-btn-action]');
 
           if (btnElem) {
             if (btnElem.dataset.btnAction === 'add-user') {

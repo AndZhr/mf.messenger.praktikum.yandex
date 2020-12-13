@@ -7,6 +7,7 @@ export class ButtonPopup extends Block {
   }
 
   render() {
+    // @ts-ignore
     let template = Handlebars.compile(templateStr);
     return template(this.props);
   }
@@ -20,7 +21,7 @@ export class ButtonPopup extends Block {
   }
 
   hide(target?: EventTarget): void {
-    if (target && !target.closest('.chat-popup__box')) {
+    if (target && target instanceof Element && !target.closest('.chat-popup__box')) {
       this._element.classList.add('hidden');
     }
   }

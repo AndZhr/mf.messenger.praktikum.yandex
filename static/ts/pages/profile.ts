@@ -99,14 +99,14 @@ function initShowData() {
   });
 
   profileBtn.addEventListener('click', (event: Event) => {
-    if (event.target) {
+    if (event.target && event.target instanceof HTMLElement) {
       const state = {
         showInfo: false,
         changeData: false,
         changePassword: false
       };
 
-      let actionType: string = event.target.dataset.type;
+      let actionType: string | undefined = event.target.dataset.type;
 
       if (actionType === 'change-data') {
         state.changeData = true;

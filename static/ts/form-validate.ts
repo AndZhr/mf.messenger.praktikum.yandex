@@ -9,7 +9,7 @@ export function inputsValidate(event: Event, formData: formData, formElem: HTMLF
   if (event.type === 'blur') {
     let input: EventTarget | null = event.target;
 
-    if (!input) return false;
+    if (!isInputElement(input)) return false;
 
     if (input.name) {
       formData.formValid[input.name] = formData.inputsRegexp[input.name].test(input.value);
@@ -45,4 +45,10 @@ export function inputsValidate(event: Event, formData: formData, formElem: HTMLF
   }
 
   return formIsValid;
+}
+
+function isInputElement(elem: EventTarget | null): elem is HTMLInputElement {
+  if (!elem || !(elem instanceof HTMLInputElement)) return false;
+
+  return (elem.tagName === 'INPUT');
 }
