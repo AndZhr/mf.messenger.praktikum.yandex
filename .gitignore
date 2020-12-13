@@ -1,1 +1,6 @@
 node_modules/
+
+static/js/*
+!static/js/libs
+
+.DS_Store
