@@ -1,0 +1,11 @@
+export default `
+  <button
+    class="{{ classList }}"
+    type="{{ type }}"
+    {{#if dataType}}
+    data-type="{{ dataType }}"
+    {{/if}}
+  >
+    {{ text }}
+  </button>
+`;
