@@ -8,7 +8,6 @@ const pageData = {
 };
 
 if (container && pageTemplate) {
-  // @ts-ignore
   let template = Handlebars.compile(pageTemplate.innerHTML);
   container.innerHTML = template(pageData);
 }

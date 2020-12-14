@@ -16,9 +16,8 @@ class LoginForm extends Block {
     super('div', ['chat-auth__form', 'chat-form'], props);
   }
 
-  render() {
-    if (!formTemplateElem) return;
-    // @ts-ignore
+  render(): string {
+    if (!formTemplateElem) return '';
     let template = Handlebars.compile(formTemplateElem.innerHTML);
     return template(this.props);
   }

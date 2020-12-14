@@ -23,7 +23,6 @@ class RegisterForm extends Block {
 
   render() {
     if (!formTemplateElem) return '';
-    // @ts-ignore
     let template = Handlebars.compile(formTemplateElem.innerHTML);
     return template(this.props);
   }

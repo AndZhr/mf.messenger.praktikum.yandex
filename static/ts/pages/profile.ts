@@ -29,7 +29,6 @@ class ProfilePage extends Block {
 
   render() {
     if (!profileTemplateElem) return '';
-    // @ts-ignore
     let template = Handlebars.compile(profileTemplateElem.innerHTML);
     return template(this.props);
   }

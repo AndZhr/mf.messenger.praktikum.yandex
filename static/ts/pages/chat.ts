@@ -125,8 +125,9 @@ class ChatList extends Block {
   }
 
   render() {
-    // @ts-ignore
-    let template = Handlebars.compile(chatListTemplateElem?.innerHTML);
+    if (!chatListTemplateElem) return '';
+
+    let template = Handlebars.compile(chatListTemplateElem.innerHTML);
     return template(this.props);
   }
 }
@@ -137,8 +138,9 @@ class ChatBody extends Block {
   }
 
   render() {
-    // @ts-ignore
-    let template = Handlebars.compile(chatBodyTemplateElem?.innerHTML);
+    if (!chatBodyTemplateElem) return '';
+
+    let template = Handlebars.compile(chatBodyTemplateElem.innerHTML);
     return template(this.props);
   }
 }
