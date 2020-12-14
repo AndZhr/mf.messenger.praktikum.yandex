@@ -70,7 +70,15 @@ export class Block {
   }
 
   componentDidUpdate(oldProps: any, newProps: any) {
-    return oldProps !== newProps;
+    let didUpdate = false;
+
+    for (let key of Object.keys(oldProps)) {
+      if (newProps[key] !== oldProps[key]) {
+        didUpdate = true;
+      }
+    }
+
+    return didUpdate;
   }
 
   setProps = (nextProps: any) => {
@@ -105,9 +113,10 @@ export class Block {
         return typeof value === "function" ? value.bind(target) : value;
       },
       set: (target, prop, value) => {
+        let originalObj = {...target};
         target[prop] = value;
 
-        this.eventBus().emit(Block.EVENTS.FLOW_CDU, {...target}, target);
+        this.eventBus().emit(Block.EVENTS.FLOW_CDU, originalObj, target);
         return true;
       },
       deleteProperty() {
