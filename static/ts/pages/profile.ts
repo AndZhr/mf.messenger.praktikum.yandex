@@ -132,14 +132,6 @@ function initChangeData() {
 
   const profileForm: HTMLElement | null = document.getElementById('profile-form');
   const formData = {
-    inputsRegexp: {
-      'first_name': /^[a-zа-яё\-]+$/i,
-      'second_name': /^[a-zа-яё\-]+$/i,
-      email: /^\S+@\S+\.\S+$/,
-      phone: /^\+?(7|8)\d{10}$/,
-      login: /^[a-z\_\-\.]{6,}$/i,
-      'display_name': /^[a-zа-яё \-]+$/i
-    },
     formValid: {
       'first_name': true,
       'second_name': true,

@@ -5,10 +5,6 @@ import { Button } from './../components/Button/index.js';
 const loginForm: HTMLElement | null = document.getElementById('login-form');
 const formTemplateElem: HTMLElement | null = document.getElementById('login-template');
 const formData = {
-  inputsRegexp: {
-    login: /^[a-z\_\-\.]{6,}$/i,
-    password: /^.{8,}$/
-  },
   formValid: {
     login: true,
     password: true

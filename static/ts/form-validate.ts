@@ -1,7 +1,17 @@
 type formData = {
   formValid: {[key: string]: boolean};
-  inputsRegexp: {[key: string]: RegExp};
 }
+
+const regexpObj: {[key: string]: RegExp} = {
+  email: /^\S+@\S+\.\S+$/,
+  login: /^[a-z\_\-\.]{6,}$/i,
+  'first_name': /^[a-zа-яё\-]+$/i,
+  'second_name': /^[a-zа-яё\-]+$/i,
+  phone: /^\+?(7|8)\d{10}$/,
+  password: /^.{8,}$/,
+  'password_confirm': /^.{8,}$/,
+  'display_name': /^[a-zа-яё \-]+$/i
+};
 
 export function inputsValidate(event: Event, formData: formData, formElem: HTMLFormElement | null): boolean {
   if (!event || !event.type || !formElem) return false;
@@ -11,8 +21,8 @@ export function inputsValidate(event: Event, formData: formData, formElem: HTMLF
 
     if (!isInputElement(input)) return false;
 
-    if (input.name) {
-      formData.formValid[input.name] = formData.inputsRegexp[input.name].test(input.value);
+    if (input.name && input.name in regexpObj) {
+      formData.formValid[input.name] = regexpObj[input.name].test(input.value);
 
       let invalidDiv: HTMLDivElement | null = document.querySelector(`[data-input-name=${input.name}]`);
 
@@ -25,7 +35,9 @@ export function inputsValidate(event: Event, formData: formData, formElem: HTMLF
     let inputs: NodeListOf<HTMLInputElement> = formElem.querySelectorAll('input');
 
     for (let input of inputs) {
-      formData.formValid[input.name] = formData.inputsRegexp[input.name].test(input.value);
+      if (!(input.name in regexpObj)) continue;
+
+      formData.formValid[input.name] = regexpObj[input.name].test(input.value);
 
       let invalidDiv: HTMLDivElement | null = document.querySelector(`[data-input-name=${input.name}]`);
 

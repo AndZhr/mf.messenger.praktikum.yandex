@@ -5,15 +5,6 @@ import { Button } from './../components/Button/index.js';
 const registerForm: HTMLElement | null = document.getElementById('register-form');
 const formTemplateElem = document.getElementById('register-template');
 const formData = {
-  inputsRegexp: {
-    email: /^\S+@\S+\.\S+$/,
-    login: /^[a-z\_\-\.]{6,}$/i,
-    'first_name': /^[a-zа-яё\-]+$/i,
-    'second_name': /^[a-zа-яё\-]+$/i,
-    phone: /^\+?(7|8)\d{10}$/,
-    password: /^.{8,}$/,
-    'password_confirm': /^.{8,}$/
-  },
   formValid: {
     email: true,
     login: true,
