@@ -1,7 +1,7 @@
-import templateStr from './InputPopup.js';
-import { Block } from './../../block.js';
+import templateStr from './ButtonPopup.js';
+import { Block } from './../../libs/block.js';
 
-export class InputPopup extends Block {
+export class ButtonPopup extends Block {
   constructor(props: object) {
     super('div', ['chat-popup', 'hidden'], props);
   }
@@ -21,7 +21,7 @@ export class InputPopup extends Block {
   }
 
   hide(target?: EventTarget): void {
-    if (target && (target instanceof HTMLElement) && !target.closest('.chat-popup__box')) {
+    if (target && target instanceof Element && !target.closest('.chat-popup__box')) {
       this._element.classList.add('hidden');
     }
   }

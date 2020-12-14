@@ -1,6 +1,9 @@
 node_modules/
 
-static/js/*
-!static/js/libs
+static/dist/*
+!static/dist/libs/
+
+static/dist/libs/*
+!static/dist/libs/handlebars.min-v4.7.6.js
 
 .DS_Store

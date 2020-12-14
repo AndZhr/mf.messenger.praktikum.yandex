@@ -1,7 +1,7 @@
-import templateStr from './FilePopup.js';
-import { Block } from './../../block.js';
+import templateStr from './InputPopup.js';
+import { Block } from './../../libs/block.js';
 
-export class FilePopup extends Block {
+export class InputPopup extends Block {
   constructor(props: object) {
     super('div', ['chat-popup', 'hidden'], props);
   }

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "static/js",
+    "outDir": "static/dist",
     "target": "es2017",
     "noImplicitAny": true,
     "noUnusedLocals": true,

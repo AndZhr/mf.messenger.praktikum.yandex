@@ -1,5 +1,5 @@
-import { Block } from './../block.js';
-import { inputsValidate } from './../form-validate.js';
+import { Block } from './../libs/block.js';
+import { inputsValidate } from './../libs/form-validate.js';
 import { Button } from './../components/Button/index.js';
 
 const loginForm: HTMLElement | null = document.getElementById('login-form');

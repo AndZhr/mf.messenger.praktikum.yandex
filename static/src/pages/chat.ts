@@ -1,4 +1,4 @@
-import { Block } from './../block.js';
+import { Block } from './../libs/block.js';
 import { FilePopup } from './../components/FilePopup/index.js';
 import { InputPopup } from './../components/InputPopup/index.js';
 import { ButtonPopup } from './../components/ButtonPopup/index.js';
