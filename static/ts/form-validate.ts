@@ -10,7 +10,10 @@ const regexpObj: {[key: string]: RegExp} = {
   phone: /^\+?(7|8)\d{10}$/,
   password: /^.{8,}$/,
   'password_confirm': /^.{8,}$/,
-  'display_name': /^[a-zа-яё \-]+$/i
+  'display_name': /^[a-zа-яё \-]+$/i,
+  'old_password': /^.{8,}$/,
+  'new_password': /^.{8,}$/,
+  'new_password_confirm': /^.{8,}$/
 };
 
 export function inputsValidate(event: Event, formData: formData, formElem: HTMLFormElement | null): boolean {

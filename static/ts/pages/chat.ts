@@ -120,8 +120,16 @@ const chatData = {
 
 
 class ChatList extends Block {
-  constructor(props: object) {
+  chatBody: ChatBody;
+
+  constructor(props: object, chatBody: ChatBody) {
     super('div', [], props);
+
+    this.appendToHTML('#chat-list-container', this);
+
+    this.initChatList(true);
+
+    this.chatBody = chatBody;
   }
 
   render() {
@@ -130,11 +138,130 @@ class ChatList extends Block {
     let template = Handlebars.compile(chatListTemplateElem.innerHTML);
     return template(this.props);
   }
+
+  appendToHTML(query: string, block: any): void {
+    const root: HTMLElement | null = document.querySelector(query);
+
+    if (root) {
+      root.append(block.getContent());
+    }
+  }
+
+  initChatList(firstInit?: boolean) {
+    if (firstInit) {
+      const searchInput = document.getElementById('chat-list-search');
+      const originalChatsList = chatListData.chatsList.slice();
+
+      if (searchInput) {
+        searchInput.addEventListener('input', event => {
+          let targetElem: EventTarget | null = event.target;
+
+          if (!targetElem || !(targetElem instanceof HTMLInputElement)) return;
+
+          let searchValue = targetElem.value;
+
+          if (searchValue) {
+            let filterChatList = originalChatsList.filter(chat => chat.name.indexOf(searchValue) !== -1);
+
+            this.setProps({
+              chatsList: filterChatList
+            });
+
+            this.initChatList();
+
+          } else {
+            this.setProps({
+              chatsList: originalChatsList
+            });
+
+            this.initChatList();
+          }
+
+        });
+      }
+    }
+
+    const chatList: HTMLElement | null = document.getElementById('chat-list');
+
+    if (chatList) {
+      chatList.addEventListener('click', event => {
+        let targetElem: EventTarget | null = event.target;
+
+        if (!targetElem || !(targetElem instanceof Element)) return;
+
+        let chatListItem: HTMLElement | null = targetElem.closest('.chat-list__item');
+
+        let selectedChat = chatListData.chatsList.find(item => {
+          if (!chatListItem) return false;
+          return item.id === chatListItem.id;
+        });
+
+        if (!selectedChat) return;
+
+        this.chatBody.setProps({
+          chatFirstLetter: selectedChat.firstLetter,
+          chatName: selectedChat.name,
+          slectedChat: selectedChat.id,
+          messageList: selectedChat.messageList
+        });
+
+        this.chatBody.initChat();
+      });
+    }
+  }
 }
 
 class ChatBody extends Block {
+  inputPopup: InputPopup;
+  filePopup: FilePopup;
+  buttonPopup: ButtonPopup;
+  submitBtn: Button;
+
   constructor(props: object) {
     super('div', ['chat-body__message-feed', 'message-feed'], props);
+
+    this.inputPopup = new InputPopup({
+      title: '',
+      label: '',
+      btnText: '',
+      invalidText: ''
+    });
+    this.filePopup = new FilePopup({
+      title: '',
+      label: '',
+      btnText: ''
+    });
+    this.buttonPopup = new ButtonPopup({
+      title: 'Вы действительно хотите удалить чат?',
+      btnText: 'Удалить'
+    });
+    this.submitBtn = new Button({
+      classList: 'message-feed__footer-send-btn icon icon-arrow-right-solid',
+      type: 'submit',
+      text: ''
+    });
+
+    this.appendToHTML('#chat-body', this);
+    this.initChat();
+
+    this.appendToHTML('#input-popup', this.inputPopup);
+    this.appendToHTML('#file-popup', this.filePopup);
+    this.appendToHTML('#button-popup', this.buttonPopup);
+
+    document.addEventListener('click', (event: Event | null) => {
+      if (event && event.target) {
+        this.filePopup.hide(event.target);
+        this.inputPopup.hide(event.target);
+        this.buttonPopup.hide(event.target);
+      }
+
+      const dropDownList = document.querySelectorAll('[data-dropdown]');
+
+      for (let dropdown of dropDownList) {
+        dropdown.classList.remove('show');
+      }
+    });
+
   }
 
   render() {
@@ -143,212 +270,104 @@ class ChatBody extends Block {
     let template = Handlebars.compile(chatBodyTemplateElem.innerHTML);
     return template(this.props);
   }
-}
 
-const chatListBlock = new ChatList(chatListData);
-const chatBodyBlock = new ChatBody(chatData);
-const inputPopup = new InputPopup({
-  title: '',
-  label: '',
-  btnText: '',
-  invalidText: ''
-});
-const filePopup = new FilePopup({
-  title: '',
-  label: '',
-  btnText: ''
-});
-const buttonPopup = new ButtonPopup({
-  title: 'Вы действительно хотите удалить чат?',
-  btnText: 'Удалить'
-});
-const submitBtn = new Button({
-  classList: 'message-feed__footer-send-btn icon icon-arrow-right-solid',
-  type: 'submit',
-  text: ''
-});
+  appendToHTML(query: string, block: any): void {
+    const root: HTMLElement | null = document.querySelector(query);
 
-render('#chat-list-container', chatListBlock, initChatList);
-render('#chat-body', chatBodyBlock, initChat);
-render('#input-popup', inputPopup);
-render('#file-popup', filePopup);
-render('#button-popup', buttonPopup);
-
-function render(query: string, block: any, callBack?: (firstInit: boolean) => void): void {
-  const root: HTMLElement | null = document.querySelector(query);
-
-  if (root) {
-    root.append(block.getContent());
-
-    if(callBack) {
-      callBack(true);
+    if (root) {
+      root.append(block.getContent());
     }
-
   }
-}
 
-function initChatList(firstInit?: boolean) {
-  if (firstInit) {
-    const searchInput = document.getElementById('chat-list-search');
-    const originalChatsList = chatListData.chatsList.slice();
+  initChat() {
+    this.appendToHTML('[data-component=submit-btn]', this.submitBtn);
 
-    if (searchInput) {
-      searchInput.addEventListener('input', event => {
-        let targetElem: EventTarget | null = event.target;
+    const messageForm: HTMLElement | null = document.getElementById('message-form');
+    const dropDownList = document.querySelectorAll('[data-dropdown]');
 
-        if (!targetElem || !(targetElem instanceof HTMLInputElement)) return;
+    if (isFormElement(messageForm)) {
+      messageForm.addEventListener('submit', event => {
+        event.preventDefault();
 
-        let searchValue = targetElem.value;
+        let formFields: FormData = new FormData(messageForm);
 
-        if (searchValue) {
-          let filterChatList = originalChatsList.filter(chat => chat.name.indexOf(searchValue) !== -1);
+        if (formFields && formFields.get('message')) {
+          const fields = {
+            message: formFields.get('message')
+          };
 
-          chatListBlock.setProps({
-            chatsList: filterChatList
-          });
-
-          initChatList();
-
-        } else {
-          chatListBlock.setProps({
-            chatsList: originalChatsList
-          });
-
-          initChatList();
+          console.log(fields);
         }
-
       });
     }
-  }
 
-  const chatList: HTMLElement | null = document.getElementById('chat-list');
+    for (let dropdown of dropDownList) {
+      let dropdownActiveBtn: HTMLElement | null = dropdown.querySelector('[data-dropdown-btn]');
+      let dropdownBody: HTMLElement | null = dropdown.querySelector('[data-dropdown-body]');
 
-  if (chatList) {
-    chatList.addEventListener('click', event => {
-      let targetElem: EventTarget | null = event.target;
+      if (dropdownActiveBtn) {
+        dropdownActiveBtn.addEventListener('click', event => {
+          event.stopPropagation();
 
-      if (!targetElem || !(targetElem instanceof Element)) return;
-
-      let chatListItem: HTMLElement | null = targetElem.closest('.chat-list__item');
-
-      let selectedChat = chatListData.chatsList.find(item => {
-        if (!chatListItem) return false;
-        return item.id === chatListItem.id;
-      });
-
-      if (!selectedChat) return;
-
-      chatBodyBlock.setProps({
-        chatFirstLetter: selectedChat.firstLetter,
-        chatName: selectedChat.name,
-        slectedChat: selectedChat.id,
-        messageList: selectedChat.messageList
-      });
-
-      initChat();
-    });
-  }
-}
-
-document.addEventListener('click', (event: Event | null) => {
-  if (event && event.target) {
-    filePopup.hide(event.target);
-    inputPopup.hide(event.target);
-    buttonPopup.hide(event.target);
-  }
-
-  const dropDownList = document.querySelectorAll('[data-dropdown]');
-
-  for (let dropdown of dropDownList) {
-    dropdown.classList.remove('show');
-  }
-});
-
-function initChat() {
-  render('[data-component=submit-btn]', submitBtn);
-
-  const messageForm: HTMLElement | null = document.getElementById('message-form');
-  const dropDownList = document.querySelectorAll('[data-dropdown]');
-
-  if (isFormElement(messageForm)) {
-    messageForm.addEventListener('submit', event => {
-      event.preventDefault();
-
-      let formFields: FormData = new FormData(messageForm);
-
-      if (formFields && formFields.get('message')) {
-        const fields = {
-          message: formFields.get('message')
-        };
-
-        console.log(fields);
+          dropdown.classList.toggle('show');
+        });
       }
-    });
-  }
 
-  for (let dropdown of dropDownList) {
-    let dropdownActiveBtn: HTMLElement | null = dropdown.querySelector('[data-dropdown-btn]');
-    let dropdownBody: HTMLElement | null = dropdown.querySelector('[data-dropdown-body]');
+      if (dropdownBody) {
+        dropdownBody.addEventListener('click', event => {
+          event.stopPropagation();
+          let targetElem: EventTarget | null = event.target;
 
-    if (dropdownActiveBtn) {
-      dropdownActiveBtn.addEventListener('click', event => {
-        event.stopPropagation();
+          if (targetElem && targetElem instanceof Element) {
+            dropdown.classList.remove('show');
+            let btnElem: HTMLElement | null = targetElem.closest('[data-btn-action]');
 
-        dropdown.classList.toggle('show');
-      });
-    }
+            if (btnElem) {
+              if (btnElem.dataset.btnAction === 'add-user') {
+                this.inputPopup.show({
+                  title: 'Добавить пользователя',
+                  label: 'Логин',
+                  btnText: 'Добавить',
+                  invalidText: 'Укажите логин'
+                });
 
-    if (dropdownBody) {
-      dropdownBody.addEventListener('click', event => {
-        event.stopPropagation();
-        let targetElem: EventTarget | null = event.target;
+              } else if (btnElem.dataset.btnAction === 'remove-user') {
+                this.inputPopup.show({
+                  title: 'Удалить пользователя',
+                  label: 'Логин',
+                  btnText: 'Удалить',
+                  invalidText: 'Укажите логин'
+                });
 
-        if (targetElem && targetElem instanceof Element) {
-          dropdown.classList.remove('show');
-          let btnElem: HTMLElement | null = targetElem.closest('[data-btn-action]');
+              } else if (btnElem.dataset.btnAction === 'remove-chat') {
+                this.buttonPopup.show();
 
-          if (btnElem) {
-            if (btnElem.dataset.btnAction === 'add-user') {
-              inputPopup.show({
-                title: 'Добавить пользователя',
-                label: 'Логин',
-                btnText: 'Добавить',
-                invalidText: 'Укажите логин'
-              });
+              } else if (btnElem.dataset.btnAction === 'send-photo') {
+                this.filePopup.show({
+                  title: 'Загрузите файл',
+                  label: 'Выберете фото или видео на компьютере',
+                  btnText: 'Загрузить'
+                });
 
-            } else if (btnElem.dataset.btnAction === 'remove-user') {
-              inputPopup.show({
-                title: 'Удалить пользователя',
-                label: 'Логин',
-                btnText: 'Удалить',
-                invalidText: 'Укажите логин'
-              });
+              } else if (btnElem.dataset.btnAction === 'send-file') {
+                this.filePopup.show({
+                  title: 'Загрузите файл',
+                  label: 'Выберете файл на компьютере',
+                  btnText: 'Загрузить'
+                });
 
-            } else if (btnElem.dataset.btnAction === 'remove-chat') {
-              buttonPopup.show();
-
-            } else if (btnElem.dataset.btnAction === 'send-photo') {
-              filePopup.show({
-                title: 'Загрузите файл',
-                label: 'Выберете фото или видео на компьютере',
-                btnText: 'Загрузить'
-              });
-
-            } else if (btnElem.dataset.btnAction === 'send-file') {
-              filePopup.show({
-                title: 'Загрузите файл',
-                label: 'Выберете файл на компьютере',
-                btnText: 'Загрузить'
-              });
-
+              }
             }
           }
-        }
-      });
-    }
+        });
+      }
 
+    }
   }
 }
+
+const chatBodyBlock = new ChatBody(chatData);
+const chatListBlock = new ChatList(chatListData, chatBodyBlock);
 
 function isFormElement(elem: HTMLElement | null): elem is HTMLFormElement {
   if (!elem) return false;
