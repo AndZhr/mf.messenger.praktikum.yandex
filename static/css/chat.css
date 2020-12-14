@@ -31,11 +31,11 @@
   font-weight: 600;
 }
 
-.chat-list__search-input {
+.chat-list-search {
   position: relative;
 }
 
-.chat-list__search-input span {
+.chat-list-search__icon {
   font-size: 1.6rem;
   padding: 1.1rem 0;
   color: #8D99AE;
@@ -43,7 +43,7 @@
   left: 1rem;
 }
 
-.chat-list__search-input input {
+.chat-list-search__input {
   width: 100%;
   border: 0;
   font-size: 1.6rem;
