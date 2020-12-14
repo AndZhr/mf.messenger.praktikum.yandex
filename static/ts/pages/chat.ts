@@ -122,14 +122,16 @@ const chatData = {
 class ChatList extends Block {
   chatBody: ChatBody;
 
-  constructor(props: object, chatBody: ChatBody) {
+  constructor(props: object) {
     super('div', [], props);
+  }
+
+  placeBlock(chatBody: ChatBody) {
+    this.chatBody = chatBody;
 
     this.appendToHTML('#chat-list-container', this);
 
     this.initChatList(true);
-
-    this.chatBody = chatBody;
   }
 
   render() {
@@ -240,7 +242,9 @@ class ChatBody extends Block {
       type: 'submit',
       text: ''
     });
+  }
 
+  placeBlock() {
     this.appendToHTML('#chat-body', this);
     this.initChat();
 
@@ -261,7 +265,6 @@ class ChatBody extends Block {
         dropdown.classList.remove('show');
       }
     });
-
   }
 
   render() {
@@ -366,8 +369,11 @@ class ChatBody extends Block {
   }
 }
 
+const chatListBlock = new ChatList(chatListData);
 const chatBodyBlock = new ChatBody(chatData);
-const chatListBlock = new ChatList(chatListData, chatBodyBlock);
+
+chatBodyBlock.placeBlock();
+chatListBlock.placeBlock(chatBodyBlock);
 
 function isFormElement(elem: HTMLElement | null): elem is HTMLFormElement {
   if (!elem) return false;

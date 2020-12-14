@@ -59,7 +59,9 @@ class ProfilePage extends Block {
       type: 'submit',
       text: 'Сохранить'
     });
+  }
 
+  placeBlock() {
     this.appendToHTML('#profile-container', this);
     this.appendToHTML('#chat-popup', this.avatarPopup);
 
@@ -242,6 +244,7 @@ class ProfilePage extends Block {
 }
 
 const profilePage = new ProfilePage(profileData);
+profilePage.placeBlock();
 
 function isFormElement(elem: HTMLElement | null): elem is HTMLFormElement {
   if (!elem) return false;

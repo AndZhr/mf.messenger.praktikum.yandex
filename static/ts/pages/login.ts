@@ -22,7 +22,9 @@ class LoginForm extends Block {
       type: 'submit',
       text: 'Войти'
     });
+  }
 
+  placeBlock() {
     this.appendToHTML('#login-form', this);
     this.appendToHTML('[data-component=submit-btn]', this.submitBtn);
 
@@ -68,6 +70,7 @@ class LoginForm extends Block {
 }
 
 const loginFormBlock = new LoginForm(formData);
+loginFormBlock.placeBlock();
 
 function isFormElement(elem: HTMLElement | null): elem is HTMLFormElement {
   if (!elem) return false;

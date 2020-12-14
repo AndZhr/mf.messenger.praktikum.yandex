@@ -27,7 +27,9 @@ class RegisterForm extends Block {
       type: 'submit',
       text: 'Зарегистрироваться'
     });
+  }
 
+  placeBlock() {
     this.appendToHTML('#register-form', this);
     this.appendToHTML('[data-component=submit-btn]', this.submitBtn);
 
@@ -89,6 +91,7 @@ class RegisterForm extends Block {
 }
 
 const registerFormBlock = new RegisterForm(formData);
+registerFormBlock.placeBlock();
 
 function isFormElement(elem: HTMLElement | null): elem is HTMLFormElement {
   if (!elem) return false;
