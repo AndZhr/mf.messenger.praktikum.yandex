@@ -1,5 +1,9 @@
 import { EventBus } from './event-bus.js';
 
+interface SimpleObject {
+    [key: string]: any
+}
+
 export class Block {
   static EVENTS = {
     INIT: 'init',
@@ -57,28 +61,39 @@ export class Block {
   _componentDidMount() {
     this.componentDidMount();
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    this.mounted();
   }
 
   componentDidMount() {}
 
   _componentDidUpdate(oldProps: any, newProps: any) {
     const response = this.componentDidUpdate(oldProps, newProps);
+
     if (!response) {
       return;
     }
+
     this._render();
+    this.updated();
   }
 
   componentDidUpdate(oldProps: any, newProps: any) {
-    let didUpdate = false;
+    return !this.isEqual(oldProps, newProps);
+  }
 
-    for (let key of Object.keys(oldProps)) {
-      if (newProps[key] !== oldProps[key]) {
-        didUpdate = true;
+  isEqual(a: SimpleObject, b: SimpleObject): boolean {
+    for (let key of Object.keys(a)) {
+      if ((a[key] && typeof a[key] === 'object') && (b[key] && typeof b[key] === 'object')) {
+        if (!this.isEqual(a[key], b[key])) {
+          return false;
+        }
+      } else if (a[key] !== b[key]) {
+        return false;
       }
+
     }
 
-    return didUpdate;
+    return true;
   }
 
   setProps = (nextProps: any) => {
@@ -137,4 +152,8 @@ export class Block {
   hide() {
     this.getContent().style.display = 'none';
   }
+
+  mounted() {}
+
+  updated() {}
 }
