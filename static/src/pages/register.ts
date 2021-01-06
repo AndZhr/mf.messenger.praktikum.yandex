@@ -1,9 +1,9 @@
 import { Block } from './../libs/block.js';
 import { inputsValidate } from './../libs/form-validate.js';
 import { Button } from './../components/Button/index.js';
+import formTemplate from './templates/register.tmp.js';
+import { AuthAPI } from './../api/auth-api.js';
 
-const registerForm: HTMLElement | null = document.getElementById('register-form');
-const formTemplateElem = document.getElementById('register-template');
 const formData = {
   formValid: {
     email: true,
@@ -16,52 +16,48 @@ const formData = {
   }
 };
 
-class RegisterForm extends Block {
+export class Register extends Block {
   submitBtn: Button;
+  registerForm: HTMLElement | null;
 
-  constructor(props: object) {
-    super('div', ['chat-auth__form', 'chat-form'], props);
+  constructor() {
+    super('div', [], formData);
 
     this.submitBtn = new Button({
       classList: 'chat-main-btn',
       type: 'submit',
       text: 'Зарегистрироваться'
     });
-  }
 
-  placeBlock() {
-    this.appendToHTML('#register-form', this);
-    this.appendToHTML('[data-component=submit-btn]', this.submitBtn);
+    let submitBtnContainer = this._element.querySelector('[data-component=submit-btn]');
 
-    if (isFormElement(registerForm)) {
-      registerForm.addEventListener('blur', event => {
-        inputsValidate(event, formData, registerForm);
+    if (submitBtnContainer) {
+      submitBtnContainer.append(this.submitBtn.getContent());
+    }
+
+    this.registerForm = this._element.querySelector('#register-form');
+
+    if (isFormElement(this.registerForm)) {
+      this.registerForm.addEventListener('blur', event => {
+        inputsValidate(event, this.props, this.registerForm);
       }, true);
-      registerForm.addEventListener('submit', this.submitForm);
+
+      this.registerForm.addEventListener('submit', event => this.submitForm(event));
     }
   }
 
   render() {
-    if (!formTemplateElem) return '';
-    let template = Handlebars.compile(formTemplateElem.innerHTML);
+    let template = Handlebars.compile(formTemplate);
     return template(this.props);
-  }
-
-  appendToHTML(query: string, block: any): void {
-    const root: HTMLElement | null = document.querySelector(query);
-
-    if (root) {
-      root.append(block.getContent());
-    }
   }
 
   submitForm(event: Event): void {
     event.preventDefault();
 
-    if (!isFormElement(registerForm)) return;
+    if (!isFormElement(this.registerForm)) return;
 
-    let formFields: FormData = new FormData(registerForm);
-    let formIsValid = inputsValidate(event, formData, registerForm);
+    let formFields: FormData = new FormData(this.registerForm);
+    let formIsValid = inputsValidate(event, formData, this.registerForm);
 
     if (formIsValid && formFields) {
       if (formFields.get('password') !== formFields.get('password_confirm')) {
@@ -76,22 +72,23 @@ class RegisterForm extends Block {
       }
 
       const fields = {
-        email: formFields.get('email'),
-        login: formFields.get('login'),
-        firstName: formFields.get('first_name'),
-        secondName: formFields.get('second_name'),
-        phone: formFields.get('phone'),
-        password: formFields.get('password'),
-        passwordConfirm: formFields.get('password_confirm')
+        'first_name': formFields.get('first_name'),
+        'second_name': formFields.get('second_name'),
+        'login': formFields.get('login'),
+        'email': formFields.get('email'),
+        'password': formFields.get('password'),
+        'phone': formFields.get('phone')
       };
 
-      console.log(fields);
+      new AuthAPI().signup(fields).then((xhr: XMLHttpRequest) => {
+        console.log(xhr.response)
+      });
     }
   }
 }
 
-const registerFormBlock = new RegisterForm(formData);
-registerFormBlock.placeBlock();
+// const registerFormBlock = new RegisterForm(formData);
+// registerFormBlock.placeBlock();
 
 function isFormElement(elem: HTMLElement | null): elem is HTMLFormElement {
   if (!elem) return false;

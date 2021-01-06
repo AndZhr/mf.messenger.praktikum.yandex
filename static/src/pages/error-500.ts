@@ -1,13 +1,20 @@
-export {};
+import { Block } from './../libs/block.js';
+import formTemplate from './templates/error.tmp.js';
 
-const container: HTMLElement | null = document.getElementById('error-500');
-const pageTemplate: HTMLElement | null = document.getElementById('error-500-template');
 const pageData = {
   title: '500',
   text: 'Что-то пошло не так, но мы уже разбираемся'
 };
 
-if (container && pageTemplate) {
-  let template = Handlebars.compile(pageTemplate.innerHTML);
-  container.innerHTML = template(pageData);
+export class Error500 extends Block {
+  loginForm: HTMLElement | null;
+
+  constructor() {
+    super('div', [], pageData);
+  }
+
+  render(): string {
+    let template = Handlebars.compile(formTemplate);
+    return template(this.props);
+  }
 }

@@ -1,13 +1,20 @@
-export {};
+import { Block } from './../libs/block.js';
+import formTemplate from './templates/error.tmp.js';
 
-const container: HTMLElement | null = document.getElementById('error-404');
-const pageTemplate: HTMLElement | null = document.getElementById('error-404-template');
 const pageData = {
   title: '404',
   text: 'Такой страницы не существует'
 };
 
-if (container && pageTemplate) {
-  let template = Handlebars.compile(pageTemplate.innerHTML);
-  container.innerHTML = template(pageData);
+export class Error404 extends Block {
+  loginForm: HTMLElement | null;
+
+  constructor() {
+    super('div', [], pageData);
+  }
+
+  render(): string {
+    let template = Handlebars.compile(formTemplate);
+    return template(this.props);
+  }
 }

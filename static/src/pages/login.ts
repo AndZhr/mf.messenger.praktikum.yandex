@@ -1,9 +1,12 @@
 import { Block } from './../libs/block.js';
 import { inputsValidate } from './../libs/form-validate.js';
 import { Button } from './../components/Button/index.js';
+import formTemplate from './templates/login.tmp.js';
+import { AuthAPI } from './../api/auth-api.js';
+import { Router } from './../libs/router.js';
 
-const loginForm: HTMLElement | null = document.getElementById('login-form');
-const formTemplateElem: HTMLElement | null = document.getElementById('login-template');
+const router = new Router('#app');
+
 const formData = {
   formValid: {
     login: true,
@@ -11,66 +14,62 @@ const formData = {
   }
 };
 
-class LoginForm extends Block {
+export class Login extends Block {
   submitBtn: Button;
+  loginForm: HTMLElement | null;
 
-  constructor(props: object) {
-    super('div', ['chat-auth__form', 'chat-form'], props);
+  constructor() {
+    super('div', ['chat-auth__form', 'chat-form'], formData);
 
     this.submitBtn = new Button({
       classList: 'chat-main-btn',
       type: 'submit',
       text: 'Войти'
     });
-  }
 
-  placeBlock() {
-    this.appendToHTML('#login-form', this);
-    this.appendToHTML('[data-component=submit-btn]', this.submitBtn);
+    let submitBtnContainer = this._element.querySelector('[data-component=submit-btn]');
 
-    if (isFormElement(loginForm)) {
-      loginForm.addEventListener('blur', event => {
-        inputsValidate(event, formData, loginForm);
+    if (submitBtnContainer) {
+      submitBtnContainer.append(this.submitBtn.getContent());
+    }
+
+    this.loginForm = this._element.querySelector('#login-form');
+
+    if (isFormElement(this.loginForm)) {
+      this.loginForm.addEventListener('blur', event => {
+        inputsValidate(event, this.props, this.loginForm);
       }, true);
-      loginForm.addEventListener('submit', this.submitForm);
+
+      this.loginForm.addEventListener('submit', event => this.submitForm(event));
     }
   }
 
   render(): string {
-    if (!formTemplateElem) return '';
-    let template = Handlebars.compile(formTemplateElem.innerHTML);
+    let template = Handlebars.compile(formTemplate);
     return template(this.props);
-  }
-
-  appendToHTML(query: string, block: any): void {
-    const root: HTMLElement | null = document.querySelector(query);
-
-    if (root) {
-      root.append(block.getContent());
-    }
   }
 
   submitForm(event: Event): void {
     event.preventDefault();
 
-    if (!isFormElement(loginForm)) return;
+    if (!isFormElement(this.loginForm)) return;
 
-    let formFields: FormData = new FormData(loginForm);
-    let formIsValid = inputsValidate(event, formData, loginForm);
+    let formFields: FormData = new FormData(this.loginForm);
+    let formIsValid = inputsValidate(event, this.props, this.loginForm);
 
     if (formIsValid && formFields) {
       const fields = {
         login: formFields.get('login'),
         password: formFields.get('password')
       };
-
-      console.log(fields);
+      // kZu-bds-tQb-gCW
+      new AuthAPI().signin(fields).then((xhr: XMLHttpRequest) => {
+        router.go('/');
+        console.log(xhr.response)
+      });
     }
   }
 }
-
-const loginFormBlock = new LoginForm(formData);
-loginFormBlock.placeBlock();
 
 function isFormElement(elem: HTMLElement | null): elem is HTMLFormElement {
   if (!elem) return false;

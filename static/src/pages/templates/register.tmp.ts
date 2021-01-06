@@ -1,26 +1,8 @@
-<!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/auth.css">
-    <title>Мессенджер</title>
-  </head>
-  <body>
-    <main class="main">
-      <div class="chat-auth">
-        <div class="chat-auth__container tile-block">
-          <h3 class="chat-title">Регистрация</h3>
-          <form id="register-form">
-
-          </form>
-        </div>
-      </div>
-    </main>
-
-    <script type="text/x-handlebars-template" id="register-template">
+export default `
+<div class="chat-auth">
+  <div class="chat-auth__container tile-block">
+    <h3 class="chat-title">Регистрация</h3>
+    <form id="register-form" class="chat-auth__form chat-form">
 
       <div class="chat-form__column">
         <div class="chat-auth__form-input chat-input">
@@ -63,12 +45,11 @@
         </div>
         <div data-component="submit-btn" class="chat-form__btn"></div>
         <div class="chat-auth__form-link">
-          <a class="chat-link" href="login.html">Вход</a>
+          <a class="chat-link" href="#" data-link="/login">Вход</a>
         </div>
       </div>
 
-    </script>
-    <script src="dist/libs/handlebars.min-v4.7.6.js"></script>
-    <script src="dist/pages/register.js" type="module"></script>
-  </body>
-</html>
+    </form>
+  </div>
+</div>
+`;

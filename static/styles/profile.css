@@ -10,7 +10,10 @@
   padding: 1.5rem 2.5rem;
 }
 
-.chat-profile__avatar {
+.chat-profile__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
 }
 

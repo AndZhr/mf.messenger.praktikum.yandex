@@ -3,16 +3,16 @@ import { FilePopup } from './../components/FilePopup/index.js';
 import { InputPopup } from './../components/InputPopup/index.js';
 import { ButtonPopup } from './../components/ButtonPopup/index.js';
 import { Button } from './../components/Button/index.js';
-
-const chatListTemplateElem: HTMLElement | null = document.getElementById('chat-list-template');
-const chatBodyTemplateElem = document.getElementById('chat-template');
+import chatListTemplate from './templates/chat-list.tmp.js';
+import chatTemplate from './templates/chat.tmp.js';
+import { ChatAPI } from './../api/chat-api.js';
 
 const chatListData = {
   chatsList: [
     {
       id: 'chat_0',
       firstLetter: 'А',
-      name: 'Андрей',
+      title: 'Андрей',
       time: '19:39',
       message: 'Отель на Мальдивах предложил неограниченное проживание в...',
       yourMessageFlag: false,
@@ -22,7 +22,7 @@ const chatListData = {
     {
       id: 'chat_1',
       firstLetter: 'Н',
-      name: 'Никита',
+      title: 'Никита',
       time: '19:42',
       message: 'Теперь понял, откуда ты узнал об этом сайте) тоже посмотрел',
       yourMessageFlag: false,
@@ -32,7 +32,7 @@ const chatListData = {
     {
       id: 'chat_2',
       firstLetter: 'С',
-      name: 'Славик',
+      title: 'Славик',
       time: '02:24',
       message: 'Что-то срочное? Я на встрече с Геннадием Валентиновичем',
       yourMessageFlag: false,
@@ -42,7 +42,7 @@ const chatListData = {
     {
       id: 'chat_3',
       firstLetter: 'П',
-      name: 'Петр Хадяков',
+      title: 'Петр Хадяков',
       time: 'Пт',
       message: 'Да нет, всё понятно. Это уж она сама выберет, какие ей хочется.',
       yourMessageFlag: false,
@@ -52,7 +52,7 @@ const chatListData = {
     {
       id: 'chat_4',
       firstLetter: 'И',
-      name: 'Илья Варламов',
+      title: 'Илья Варламов',
       time: 'Пт',
       message: 'Выборы президента США — главное событие поздней осени...',
       yourMessageFlag: false,
@@ -62,7 +62,7 @@ const chatListData = {
     {
       id: 'chat_5',
       firstLetter: 'И',
-      name: 'Ира',
+      title: 'Ира',
       time: 'Чт',
       message: 'Придумаем что-нибудь)',
       yourMessageFlag: true,
@@ -72,7 +72,7 @@ const chatListData = {
     {
       id: 'chat_6',
       firstLetter: 'Р',
-      name: 'Роман',
+      title: 'Роман',
       time: 'Чт',
       message: 'Скоро буду',
       yourMessageFlag: true,
@@ -102,7 +102,7 @@ const chatListData = {
     {
       id: 'chat_7',
       firstLetter: 'Ю',
-      name: 'Юля',
+      title: 'Юля',
       time: '06.11.20',
       message: 'У меня сегодня заказ',
       yourMessageFlag: false,
@@ -122,36 +122,31 @@ const chatData = {
 class ChatList extends Block {
   chatBody: ChatBody;
 
-  constructor(props: object) {
-    super('div', [], props);
-  }
+  constructor(props: object, chatBody: ChatBody) {
+    super('div', ['chat-list'], props);
 
-  placeBlock(chatBody: ChatBody) {
     this.chatBody = chatBody;
-
-    this.appendToHTML('#chat-list-container', this);
-
     this.initChatList(true);
   }
 
-  render() {
-    if (!chatListTemplateElem) return '';
+  mounted() {
+    new ChatAPI().getChats().then(xhr => {
+      if (xhr.status === 200) {
+        let data = JSON.parse(xhr.response);
 
-    let template = Handlebars.compile(chatListTemplateElem.innerHTML);
-    return template(this.props);
+        console.log(data);
+      }
+    });
   }
 
-  appendToHTML(query: string, block: any): void {
-    const root: HTMLElement | null = document.querySelector(query);
-
-    if (root) {
-      root.append(block.getContent());
-    }
+  render() {
+    let template = Handlebars.compile(chatListTemplate);
+    return template(this.props);
   }
 
   initChatList(firstInit?: boolean) {
     if (firstInit) {
-      const searchInput = document.getElementById('chat-list-search');
+      const searchInput = this._element.querySelector('#chat-list-search');
       const originalChatsList = chatListData.chatsList.slice();
 
       if (searchInput) {
@@ -183,7 +178,7 @@ class ChatList extends Block {
       }
     }
 
-    const chatList: HTMLElement | null = document.getElementById('chat-list');
+    const chatList: HTMLElement | null = this._element.querySelector('#chat-list');
 
     if (chatList) {
       chatList.addEventListener('click', event => {
@@ -220,7 +215,7 @@ class ChatBody extends Block {
   submitBtn: Button;
 
   constructor(props: object) {
-    super('div', ['chat-body__message-feed', 'message-feed'], props);
+    super('div', ['chat-body'], props);
 
     this.inputPopup = new InputPopup({
       title: '',
@@ -228,38 +223,38 @@ class ChatBody extends Block {
       btnText: '',
       invalidText: ''
     });
+
     this.filePopup = new FilePopup({
       title: '',
       label: '',
       btnText: ''
     });
+
     this.buttonPopup = new ButtonPopup({
       title: 'Вы действительно хотите удалить чат?',
       btnText: 'Удалить'
     });
+
     this.submitBtn = new Button({
       classList: 'message-feed__footer-send-btn icon icon-arrow-right-solid',
       type: 'submit',
       text: ''
     });
-  }
 
-  placeBlock() {
-    this.appendToHTML('#chat-body', this);
     this.initChat();
 
     this.appendToHTML('#input-popup', this.inputPopup);
     this.appendToHTML('#file-popup', this.filePopup);
     this.appendToHTML('#button-popup', this.buttonPopup);
 
-    document.addEventListener('click', (event: Event | null) => {
+    this._element.addEventListener('click', (event: Event | null) => {
       if (event && event.target) {
         this.filePopup.hide(event.target);
         this.inputPopup.hide(event.target);
         this.buttonPopup.hide(event.target);
       }
 
-      const dropDownList = document.querySelectorAll('[data-dropdown]');
+      const dropDownList = this._element.querySelectorAll('[data-dropdown]');
 
       for (let dropdown of dropDownList) {
         dropdown.classList.remove('show');
@@ -268,14 +263,12 @@ class ChatBody extends Block {
   }
 
   render() {
-    if (!chatBodyTemplateElem) return '';
-
-    let template = Handlebars.compile(chatBodyTemplateElem.innerHTML);
+    let template = Handlebars.compile(chatTemplate);
     return template(this.props);
   }
 
   appendToHTML(query: string, block: any): void {
-    const root: HTMLElement | null = document.querySelector(query);
+    const root: HTMLElement | null = this._element.querySelector(query);
 
     if (root) {
       root.append(block.getContent());
@@ -285,8 +278,8 @@ class ChatBody extends Block {
   initChat() {
     this.appendToHTML('[data-component=submit-btn]', this.submitBtn);
 
-    const messageForm: HTMLElement | null = document.getElementById('message-form');
-    const dropDownList = document.querySelectorAll('[data-dropdown]');
+    const messageForm: HTMLElement | null = this._element.querySelector('#message-form');
+    const dropDownList = this._element.querySelectorAll('[data-dropdown]');
 
     if (isFormElement(messageForm)) {
       messageForm.addEventListener('submit', event => {
@@ -369,11 +362,17 @@ class ChatBody extends Block {
   }
 }
 
-const chatListBlock = new ChatList(chatListData);
-const chatBodyBlock = new ChatBody(chatData);
+export class Chats extends Block {
 
-chatBodyBlock.placeBlock();
-chatListBlock.placeBlock(chatBodyBlock);
+  constructor() {
+    super('div', ['chat-container']);
+
+    const chatBody = new ChatBody(chatData);
+
+    this._element.append(new ChatList(chatListData, chatBody).getContent());
+    this._element.append(chatBody.getContent());
+  }
+}
 
 function isFormElement(elem: HTMLElement | null): elem is HTMLFormElement {
   if (!elem) return false;

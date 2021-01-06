@@ -2,8 +2,12 @@ import { Block } from './../libs/block.js';
 import { inputsValidate } from './../libs/form-validate.js';
 import { FilePopup } from './../components/FilePopup/index.js';
 import { Button } from './../components/Button/index.js';
+import profileTemplate from './templates/profile.tmp.js';
+import { AuthAPI } from './../api/auth-api.js';
+import { UserAPI } from './../api/user-api.js';
+import { Router } from './../libs/router.js';
 
-const profileTemplateElem = document.getElementById('profile-template');
+const router = new Router('#app');
 
 const profileData = {
   state: {
@@ -12,58 +16,72 @@ const profileData = {
     changePassword: false
   },
   data: {
-    'first_name': 'Михаил',
-    email: 'mishamachin@ya.ru',
-    login: 'mishamachin',
-    'second_name': 'Мячин',
-    phone: '+79991234567',
-    'display_name': 'Михаил'
+    'first_name': '',
+    email: '',
+    login: '',
+    'second_name': '',
+    phone: '',
+    'display_name': ''
   }
 };
 
-class ProfilePage extends Block {
+export class Profile extends Block {
   avatarPopup: FilePopup;
   changePasswordBtn: Button;
   changeInfoBtn: Button;
   exitBtn: Button;
   saveBtn: Button;
 
-  constructor(props: object) {
-    super('div', [], props);
+  constructor() {
+    super('div', [], profileData);
+  }
 
+  render() {
+    let template = Handlebars.compile(profileTemplate);
+    return template(this.props);
+  }
+
+  appendToHTML(query: string, block: any): void {
+    const root: HTMLElement | null = this._element.querySelector(query);
+
+    if (root) {
+      root.append(block.getContent());
+    }
+  }
+
+  mounted() {
     this.avatarPopup = new FilePopup({
       title: 'Загрузите изображение',
       label: 'Выберете файл на компьютере',
       btnText: 'Поменять'
     });
+
     this.changeInfoBtn = new Button({
       classList: 'chat-main-btn',
       type: 'button',
       dataType: 'change-data',
       text: 'Изменить данные'
     });
+
     this.changePasswordBtn = new Button({
       classList: 'chat-main-btn',
       type: 'button',
       dataType: 'change-password',
       text: 'Изменить пароль'
     });
+
     this.exitBtn = new Button({
       classList: 'chat-warning-btn',
       type: 'button',
       dataType: 'exit',
       text: 'Выйти'
     });
+
     this.saveBtn = new Button({
       classList: 'chat-main-btn',
       type: 'submit',
       text: 'Сохранить'
     });
-  }
-
-  placeBlock() {
-    this.appendToHTML('#profile-container', this);
-    this.appendToHTML('#chat-popup', this.avatarPopup);
 
     document.addEventListener('click', (event: Event | null) => {
       if (event && event.target) {
@@ -74,27 +92,25 @@ class ProfilePage extends Block {
     this.initShowData();
   }
 
-  render() {
-    if (!profileTemplateElem) return '';
-    let template = Handlebars.compile(profileTemplateElem.innerHTML);
-    return template(this.props);
-  }
-
-  appendToHTML(query: string, block: any): void {
-    const root: HTMLElement | null = document.querySelector(query);
-
-    if (root) {
-      root.append(block.getContent());
-    }
+  updated() {
+    this.initShowData();
   }
 
   initShowData() {
+    new AuthAPI().userInfo().then(xhr => {
+      if (xhr.status === 200) {
+        let userInfo = JSON.parse(xhr.response);
+
+        this.setProps({ data: userInfo });
+      }
+    });
+
     this.appendToHTML('[data-component=change-info-btn]', this.changeInfoBtn);
     this.appendToHTML('[data-component=change-password-btn]', this.changePasswordBtn);
     this.appendToHTML('[data-component=exit-btn]', this.exitBtn);
 
-    const profileBtn = document.getElementById('profile-btn');
-    const avatarBtn = document.getElementById('avatar-btn');
+    const profileBtn = this._element.querySelector('#profile-btn');
+    const avatarBtn = this._element.querySelector('#avatar-btn');
 
     if (!avatarBtn || !profileBtn) return;
 
@@ -126,7 +142,11 @@ class ProfilePage extends Block {
           this.initChangePassword();
 
         } else if (actionType === 'exit') {
-          console.log('[ EXIT Action ]')
+          new AuthAPI().logout().then((xhr: XMLHttpRequest) => {
+            if (xhr.status === 200) {
+              router.go('/login');
+            }
+          });
         }
       }
     });
@@ -175,13 +195,14 @@ class ProfilePage extends Block {
           'display_name': formFields.get('display_name')
         };
 
-        console.log(fields);
-
-        this.setProps({
-          state,
-          data: fields
+        new UserAPI().changeProfile(fields).then((xhr: XMLHttpRequest) => {
+          if (xhr.status === 200) {
+            this.setProps({
+              state,
+              data: fields
+            });
+          }
         });
-        this.initShowData();
       }
     });
   }
@@ -230,21 +251,21 @@ class ProfilePage extends Block {
 
         const fields = {
           oldPassword: formFields.get('old_password'),
-          newPassword: formFields.get('new_password'),
-          newPasswordConfirm: formFields.get('new_password_confirm')
+          newPassword: formFields.get('new_password')
         };
 
-        console.log(fields);
-
-        this.setProps({ state });
-        this.initShowData();
+        new UserAPI().changePassword(fields).then((xhr: XMLHttpRequest) => {
+          if (xhr.status === 200) {
+            this.setProps({ state });
+          }
+        });
       }
     });
   }
 }
 
-const profilePage = new ProfilePage(profileData);
-profilePage.placeBlock();
+// const profilePage = new ProfilePage(profileData);
+// profilePage.placeBlock();
 
 function isFormElement(elem: HTMLElement | null): elem is HTMLFormElement {
   if (!elem) return false;
