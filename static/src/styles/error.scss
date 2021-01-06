@@ -1,0 +1,26 @@
+.chat-error {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+
+  &__container {
+    width: 108rem;
+    margin: 0 auto;
+  }
+
+  &__title {
+    font-size: 4.8rem;
+    margin: 0;
+  }
+
+  &__text {
+    font-size: 1.8rem;
+    margin: 0;
+    margin-bottom: 1rem;
+  }
+
+  &__link {
+    font-size: 1.8rem;
+  }
+}
