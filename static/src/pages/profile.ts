@@ -6,6 +6,7 @@ import profileTemplate from './templates/profile.tmp.js';
 import { AuthAPI } from './../api/auth-api.js';
 import { UserAPI } from './../api/user-api.js';
 import { Router } from './../libs/router.js';
+import { app } from './../app.js';
 
 const router = new Router('#app');
 
@@ -51,9 +52,9 @@ export class Profile extends Block {
 
   mounted() {
     this.avatarPopup = new FilePopup({
-      title: 'Загрузите изображение',
-      label: 'Выберете файл на компьютере',
-      btnText: 'Поменять'
+      title: '',
+      label: '',
+      btnText: ''
     });
 
     this.changeInfoBtn = new Button({
@@ -105,9 +106,21 @@ export class Profile extends Block {
       }
     });
 
+    this._element.append(this.avatarPopup.getContent());
+
     this.appendToHTML('[data-component=change-info-btn]', this.changeInfoBtn);
     this.appendToHTML('[data-component=change-password-btn]', this.changePasswordBtn);
     this.appendToHTML('[data-component=exit-btn]', this.exitBtn);
+
+    this.avatarPopup.submit = file => {
+      new UserAPI().changeProfileAvatar(file).then(xhr => {
+        if (xhr.status === 200) {
+          let userInfo = JSON.stringify(xhr.response);
+
+          this.setProps({ data: userInfo });
+        }
+      });
+    }
 
     const profileBtn = this._element.querySelector('#profile-btn');
     const avatarBtn = this._element.querySelector('#avatar-btn');
@@ -116,7 +129,11 @@ export class Profile extends Block {
 
     avatarBtn.addEventListener('click', event => {
       event.stopPropagation();
-      this.avatarPopup.show();
+      this.avatarPopup.show({
+        title: 'Загрузите изображение',
+        label: 'Выберете файл на компьютере',
+        btnText: 'Поменять'
+      });
     });
 
     profileBtn.addEventListener('click', (event: Event) => {
@@ -144,6 +161,8 @@ export class Profile extends Block {
         } else if (actionType === 'exit') {
           new AuthAPI().logout().then((xhr: XMLHttpRequest) => {
             if (xhr.status === 200) {
+              app.store.isLogin = false;
+
               router.go('/login');
             }
           });

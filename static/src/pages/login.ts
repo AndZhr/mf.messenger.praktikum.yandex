@@ -4,6 +4,7 @@ import { Button } from './../components/Button/index.js';
 import formTemplate from './templates/login.tmp.js';
 import { AuthAPI } from './../api/auth-api.js';
 import { Router } from './../libs/router.js';
+import { app } from './../app.js';
 
 const router = new Router('#app');
 
@@ -62,10 +63,13 @@ export class Login extends Block {
         login: formFields.get('login'),
         password: formFields.get('password')
       };
-      // kZu-bds-tQb-gCW
+
       new AuthAPI().signin(fields).then((xhr: XMLHttpRequest) => {
-        router.go('/');
-        console.log(xhr.response)
+        if (xhr.status === 200) {
+          app.store.isLogin = true;
+
+          router.go('/');
+        }
       });
     }
   }

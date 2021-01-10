@@ -4,7 +4,11 @@ export default `
     <div class="chat-profile__header">
       <div class="chat-profile__avatar chat-avatar">
         <div class="chat-profile__avatar-img chat-avatar__img">
+          {{#if data.avatar}}
+          <img src="https://ya-praktikum.tech{{ data.avatar }}" alt="avatar">
+          {{else}}
           <span>М</span>
+          {{/if}}
           {{#if state.showInfo}}
           <button id="avatar-btn" class="chat-profile__avatar-btn">Поменять  аватар</button>
           {{/if}}

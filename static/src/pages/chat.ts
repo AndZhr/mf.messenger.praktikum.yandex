@@ -1,142 +1,39 @@
 import { Block } from './../libs/block.js';
 import { FilePopup } from './../components/FilePopup/index.js';
 import { InputPopup } from './../components/InputPopup/index.js';
+import { OptionsPopup } from './../components/OptionsPopup/index.js';
 import { ButtonPopup } from './../components/ButtonPopup/index.js';
 import { Button } from './../components/Button/index.js';
 import chatListTemplate from './templates/chat-list.tmp.js';
+import chatListContainerTemplate from './templates/chat-list-container.tmp.js';
 import chatTemplate from './templates/chat.tmp.js';
 import { ChatAPI } from './../api/chat-api.js';
+import { UserAPI } from './../api/user-api.js';
 
-const chatListData = {
-  chatsList: [
-    {
-      id: 'chat_0',
-      firstLetter: 'А',
-      title: 'Андрей',
-      time: '19:39',
-      message: 'Отель на Мальдивах предложил неограниченное проживание в...',
-      yourMessageFlag: false,
-      notReadCount: 2,
-      messageList: []
-    },
-    {
-      id: 'chat_1',
-      firstLetter: 'Н',
-      title: 'Никита',
-      time: '19:42',
-      message: 'Теперь понял, откуда ты узнал об этом сайте) тоже посмотрел',
-      yourMessageFlag: false,
-      notReadCount: 1,
-      messageList: []
-    },
-    {
-      id: 'chat_2',
-      firstLetter: 'С',
-      title: 'Славик',
-      time: '02:24',
-      message: 'Что-то срочное? Я на встрече с Геннадием Валентиновичем',
-      yourMessageFlag: false,
-      notReadCount: 0,
-      messageList: []
-    },
-    {
-      id: 'chat_3',
-      firstLetter: 'П',
-      title: 'Петр Хадяков',
-      time: 'Пт',
-      message: 'Да нет, всё понятно. Это уж она сама выберет, какие ей хочется.',
-      yourMessageFlag: false,
-      notReadCount: 1,
-      messageList: []
-    },
-    {
-      id: 'chat_4',
-      firstLetter: 'И',
-      title: 'Илья Варламов',
-      time: 'Пт',
-      message: 'Выборы президента США — главное событие поздней осени...',
-      yourMessageFlag: false,
-      notReadCount: 0,
-      messageList: []
-    },
-    {
-      id: 'chat_5',
-      firstLetter: 'И',
-      title: 'Ира',
-      time: 'Чт',
-      message: 'Придумаем что-нибудь)',
-      yourMessageFlag: true,
-      notReadCount: 0,
-      messageList: []
-    },
-    {
-      id: 'chat_6',
-      firstLetter: 'Р',
-      title: 'Роман',
-      time: 'Чт',
-      message: 'Скоро буду',
-      yourMessageFlag: true,
-      notReadCount: 0,
-      messageList: [
-        {
-          text: 'Мы уже на месте, остановились примерно в 10 км от трассы М95, здесь очень крутое место\nМы сейчас перекусим и немного прогуляемся здесь, будем ждать тебя',
-          imageSrc: '',
-          time: '19:23',
-          yourMessageFlag: false
-        },
-        {
-          text: '',
-          imageSrc: 'images/message-img.jpg',
-          time: '19:24',
-          yourMessageFlag: false
-        },
-        {
-          text: 'Скоро буду',
-          imageSrc: '',
-          time: '19:26',
-          yourMessageFlag: true,
-          deliveredFlag: true
-        }
-      ]
-    },
-    {
-      id: 'chat_7',
-      firstLetter: 'Ю',
-      title: 'Юля',
-      time: '06.11.20',
-      message: 'У меня сегодня заказ',
-      yourMessageFlag: false,
-      notReadCount: 0,
-      messageList: []
-    }
-  ]
+interface SimpleObject {
+    [key: string]: any
+}
+
+interface ChatListInter {
+  chatsList: SimpleObject[]
+}
+
+const chatListData: ChatListInter = {
+  chatsList: []
 };
 
 const chatData = {
-  slectedChat: '',
+  slectedChat: null,
   chatName: '',
-  messageList: []
+  messageList: [],
+  usersList: []
 };
 
+class ChatListBody extends Block {
+  chatList: ChatList;
 
-class ChatList extends Block {
-  chatBody: ChatBody;
-
-  constructor(props: object, chatBody: ChatBody) {
+  constructor(props: object) {
     super('div', ['chat-list'], props);
-
-    this.chatBody = chatBody;
-    this.initChatList(true);
-  }
-
-  mounted() {
-    new ChatAPI().getChats().then(xhr => {
-      if (xhr.status === 200) {
-        let data = JSON.parse(xhr.response);
-
-        console.log(data);
-      }
-    });
   }
 
   render() {
@@ -144,67 +41,147 @@ class ChatList extends Block {
     return template(this.props);
   }
 
-  initChatList(firstInit?: boolean) {
-    if (firstInit) {
-      const searchInput = this._element.querySelector('#chat-list-search');
-      const originalChatsList = chatListData.chatsList.slice();
+  mounted() {
+    const chatListContainer = this._element.querySelector('#chat-list-container');
+    this.chatList = new ChatList(chatListData, this.props.chatBody);
 
-      if (searchInput) {
-        searchInput.addEventListener('input', event => {
-          let targetElem: EventTarget | null = event.target;
-
-          if (!targetElem || !(targetElem instanceof HTMLInputElement)) return;
-
-          let searchValue = targetElem.value;
-
-          if (searchValue) {
-            let filterChatList = originalChatsList.filter(chat => chat.name.indexOf(searchValue) !== -1);
-
-            this.setProps({
-              chatsList: filterChatList
-            });
-
-            this.initChatList();
-
-          } else {
-            this.setProps({
-              chatsList: originalChatsList
-            });
-
-            this.initChatList();
-          }
-
-        });
-      }
+    if (chatListContainer) {
+      chatListContainer.append(this.chatList.getContent());
     }
 
-    const chatList: HTMLElement | null = this._element.querySelector('#chat-list');
+    const searchInput = this._element.querySelector('#chat-list-search');
 
-    if (chatList) {
-      chatList.addEventListener('click', event => {
+    if (searchInput) {
+      searchInput.addEventListener('input', event => {
         let targetElem: EventTarget | null = event.target;
 
-        if (!targetElem || !(targetElem instanceof Element)) return;
+        if (!targetElem || !(targetElem instanceof HTMLInputElement)) return;
 
-        let chatListItem: HTMLElement | null = targetElem.closest('.chat-list__item');
+        let searchValue = targetElem.value;
 
-        let selectedChat = chatListData.chatsList.find(item => {
-          if (!chatListItem) return false;
-          return item.id === chatListItem.id;
-        });
+        if (searchValue) {
+          let filterChatList = this.chatList.chats.filter(chat => chat.title.indexOf(searchValue) !== -1);
 
-        if (!selectedChat) return;
+          this.chatList.setProps({
+            chatsList: filterChatList
+          });
 
-        this.chatBody.setProps({
-          chatFirstLetter: selectedChat.firstLetter,
-          chatName: selectedChat.name,
-          slectedChat: selectedChat.id,
-          messageList: selectedChat.messageList
-        });
+        } else {
+          this.chatList.setProps({
+            chatsList: this.chatList.chats
+          });
+        }
 
-        this.chatBody.initChat();
       });
     }
+  }
+}
+
+class ChatList extends Block {
+  chatBody: ChatBody;
+  inputPopup: InputPopup;
+  chats: any[];
+
+  constructor(props: object, chatBody: ChatBody) {
+    super('ul', ['chat-list__list'], props);
+
+    this.inputPopup = new InputPopup({
+      title: 'Создать чат',
+      label: 'Название чата',
+      btnText: 'Создать',
+      invalidText: 'Введите название',
+      action: 'add-chat'
+    });
+
+    this.inputPopup.submit = (actionType: string, input: string) => {
+      new ChatAPI().createChat(input).then(xhr => {
+        if (xhr.status === 200) {
+          this.requestChatList();
+        }
+      });
+    };
+
+    this.chatBody = chatBody;
+    this.initChatList();
+  }
+
+  mounted() {
+    this.requestChatList();
+  }
+
+  updated() {
+    this.initChatList();
+  }
+
+  render() {
+    let template = Handlebars.compile(chatListContainerTemplate);
+    return template(this.props);
+  }
+
+  requestChatList() {
+    new ChatAPI().getChats().then(xhr => {
+      if (xhr.status === 200) {
+        let data = JSON.parse(xhr.response);
+        let requestList: Promise<XMLHttpRequest>[] = [];
+
+        data.forEach((item: any) => {
+          item.firstLetter = item.title[0];
+
+          requestList.push(new ChatAPI().getNewMessagesCount(item.id));
+        });
+
+        Promise.all(requestList).then(resultList => {
+          resultList.forEach((xhr: XMLHttpRequest, idx: number) => {
+            data[idx].unreadCount = xhr.response['unread_count'];
+          });
+
+          this.chats = data.slice();
+
+          this.setProps({
+            chatsList: data
+          });
+        });
+      }
+    });
+  }
+
+  initChatList() {
+    this._element.append(this.inputPopup.getContent());
+
+    this._element.addEventListener('click', event => {
+      let targetElem: EventTarget | null = event.target;
+
+      if (!targetElem || !(targetElem instanceof Element)) return;
+
+      let chatListItem: HTMLElement | null = targetElem.closest('.chat-list__item');
+      let selectedChat;
+
+      if (chatListItem) {
+        event.stopPropagation();
+        
+        let chatId: string | number = chatListItem.id;
+
+        if (chatId === 'add-chat') {
+          this.inputPopup.show();
+
+        } else {
+          chatId = parseInt(chatId);
+
+          selectedChat = chatListData.chatsList.find(item => {
+            return item.id === chatId;
+          });
+        }
+      }
+
+      if (!selectedChat) return;
+
+      this.chatBody.setProps({
+        chatFirstLetter: selectedChat.firstLetter,
+        chatName: selectedChat.title,
+        slectedChat: selectedChat.id,
+        messageList: selectedChat.messageList
+      });
+    });
   }
 }
 
@@ -213,15 +190,26 @@ class ChatBody extends Block {
   filePopup: FilePopup;
   buttonPopup: ButtonPopup;
   submitBtn: Button;
+  optionPopup: OptionsPopup;
 
   constructor(props: object) {
     super('div', ['chat-body'], props);
 
     this.inputPopup = new InputPopup({
+      title: 'Поиск пользователя',
+      label: 'Логин',
+      btnText: 'Искать',
+      invalidText: 'Укажите логин',
+      action: 'add-user'
+    });
+
+    this.optionPopup = new OptionsPopup({
       title: '',
       label: '',
       btnText: '',
-      invalidText: ''
+      invalidText: '',
+      list: [],
+      action: ''
     });
 
     this.filePopup = new FilePopup({
@@ -232,7 +220,8 @@ class ChatBody extends Block {
 
     this.buttonPopup = new ButtonPopup({
       title: 'Вы действительно хотите удалить чат?',
-      btnText: 'Удалить'
+      btnText: 'Удалить',
+      action: 'remove-chat'
     });
 
     this.submitBtn = new Button({
@@ -243,14 +232,11 @@ class ChatBody extends Block {
 
     this.initChat();
 
-    this.appendToHTML('#input-popup', this.inputPopup);
-    this.appendToHTML('#file-popup', this.filePopup);
-    this.appendToHTML('#button-popup', this.buttonPopup);
-
-    this._element.addEventListener('click', (event: Event | null) => {
+    document.addEventListener('click', (event: Event | null) => {
       if (event && event.target) {
         this.filePopup.hide(event.target);
         this.inputPopup.hide(event.target);
+        this.optionPopup.hide(event.target);
         this.buttonPopup.hide(event.target);
       }
 
@@ -275,8 +261,60 @@ class ChatBody extends Block {
     }
   }
 
+  updated() {
+    this.initChat();
+  }
+
   initChat() {
     this.appendToHTML('[data-component=submit-btn]', this.submitBtn);
+
+    this._element.append(this.inputPopup.getContent());
+    this._element.append(this.optionPopup.getContent());
+    this._element.append(this.filePopup.getContent());
+    this._element.append(this.buttonPopup.getContent());
+
+    this.inputPopup.submit = (actionType: string, input: string) => {
+      if (actionType === 'add-user') {
+        new UserAPI().searchUserByLogin(input).then(xhr => {
+          if (xhr.status === 200) {
+            let list = JSON.parse(xhr.response);
+
+            this.optionPopup.show({
+              title: 'Добавить пользователя',
+              label: 'Пользователи',
+              btnText: 'Добавить',
+              invalidText: 'Выберете пользователя',
+              list,
+              action: 'add-user'
+            });
+          }
+        });
+      }
+    };
+
+    this.optionPopup.submit = (actionType: string, input: string) => {
+      if (actionType === 'remove-user') {
+        new ChatAPI().removeUsersFromChat([parseInt(input)], this.props.slectedChat).then(xhr => {
+         if (xhr.status === 200) { }
+        });
+      } else if (actionType === 'add-user') {
+        new ChatAPI().addUsersToChat([parseInt(input)], this.props.slectedChat).then(xhr => {
+          if (xhr.status === 200) { }
+        });
+      }
+    };
+
+    this.buttonPopup.submit = (action: string) => {
+      if (action === 'remove-chat') {
+        new ChatAPI().deleteChat(this.props.slectedChat).then(xhr => {
+          if (xhr.status === 200) {
+            let data = JSON.parse(xhr.response);
+
+            console.log(data);
+          }
+        });
+      }
+    };
 
     const messageForm: HTMLElement | null = this._element.querySelector('#message-form');
     const dropDownList = this._element.querySelectorAll('[data-dropdown]');
@@ -320,19 +358,22 @@ class ChatBody extends Block {
 
             if (btnElem) {
               if (btnElem.dataset.btnAction === 'add-user') {
-                this.inputPopup.show({
-                  title: 'Добавить пользователя',
-                  label: 'Логин',
-                  btnText: 'Добавить',
-                  invalidText: 'Укажите логин'
-                });
+                this.inputPopup.show();
 
               } else if (btnElem.dataset.btnAction === 'remove-user') {
-                this.inputPopup.show({
-                  title: 'Удалить пользователя',
-                  label: 'Логин',
-                  btnText: 'Удалить',
-                  invalidText: 'Укажите логин'
+                new ChatAPI().getChatUsers(this.props.slectedChat).then(xhr => {
+                  if (xhr.status === 200) {
+                    let list = JSON.parse(xhr.response);
+
+                    this.optionPopup.show({
+                      title: 'Удалить пользователя',
+                      label: 'Пользователи',
+                      btnText: 'Удалить',
+                      invalidText: 'Выберете пользователя',
+                      list,
+                      action: 'remove-user'
+                    });
+                  }
                 });
 
               } else if (btnElem.dataset.btnAction === 'remove-chat') {
@@ -369,7 +410,7 @@ export class Chats extends Block {
 
     const chatBody = new ChatBody(chatData);
 
-    this._element.append(new ChatList(chatListData, chatBody).getContent());
+    this._element.append(new ChatListBody({ chatBody }).getContent());
     this._element.append(chatBody.getContent());
   }
 }

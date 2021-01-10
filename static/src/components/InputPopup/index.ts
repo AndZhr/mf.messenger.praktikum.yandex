@@ -13,6 +13,12 @@ export class InputPopup extends Block {
 
   mounted() {
     this.initActions();
+
+    document.addEventListener('click', event => {
+      if (event.target) {
+        this.hide(event.target);
+      }
+    });
   }
 
   updated() {

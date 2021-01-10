@@ -1,5 +1,5 @@
 import { Router } from './libs/router.js';
-import { Store } from './libs/store.js'
+import { AuthAPI } from './api/auth-api.js'
 
 import { Login } from './pages/login.js';
 import { Register } from './pages/register.js';
@@ -20,7 +20,51 @@ router
   .redirect('*', '/404')
   .start();
 
-export const store = new Store();
+class App {
+  store: { isLogin: boolean; };
+
+  constructor() {
+    this.store = {
+      isLogin: false
+    }
+
+    new AuthAPI().userInfo().then(xhr => {
+      this.store.isLogin = (xhr.status === 200);
+
+      let currentLocation = window.location.pathname;
+
+      if (this.store.isLogin) {
+        if ((currentLocation === '/login') || (currentLocation === '/register')) {
+          router.go('/')
+        }
+      } else {
+        if ((currentLocation !== '/login') && (currentLocation !== '/register')) {
+          router.go('/login')
+        }
+      }
+    });
+  }
+}
+
+export const app = new App();
+
+router.beforeGo = (from, to): boolean => {
+  if (app.store.isLogin) {
+    if ((to !== '/login') && (to !== '/register')) {
+      return true;
+    } else {
+      return false;
+    }
+
+  } else {
+    if ((to === '/login') || (to === '/register')) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+}
 
 const appElement: HTMLElement | null = document.querySelector('#app');
 
