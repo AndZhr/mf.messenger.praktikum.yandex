@@ -12,6 +12,33 @@ export class ButtonPopup extends Block {
     return template(this.props);
   }
 
+  mounted() {
+    this.initActions();
+  }
+
+  updated() {
+    this.initActions();
+  }
+
+  initActions() {
+    const сancelBtn = this._element.querySelector('[data-btn-type=сancel]');
+    const submitBtn = this._element.querySelector('[data-btn-type=submit]');
+
+    if (сancelBtn && submitBtn) {
+      сancelBtn.addEventListener('click', () => {
+        this._element.classList.add('hidden');
+      });
+
+      submitBtn.addEventListener('click', () => {
+        this.submit(submitBtn.dataset.actionType);
+
+        this._element.classList.add('hidden');
+      });
+    }
+  }
+
+  submit(action: string) {}
+
   show(props?: object) {
     if (props) {
       this.setProps(props);

@@ -4,7 +4,11 @@ export default `
     <form data-action-type="{{ action }}">
       <div class="chat-input">
         <label class="chat-input__label">{{ label }}</label>
-        <input class="chat-input__input" type="text" name="login">
+        <select class="chat-input__input">
+          {{#each list}}
+            <option value="{{ this.id }}">{{ this.first_name }} {{ this.second_name }}</option>
+          {{/each}}
+        </select>
         <div class="chat-input__invalid" hidden>{{ invalidText }}</div>
       </div>
       <div class="chat-popup__btn">

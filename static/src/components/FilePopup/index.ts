@@ -2,15 +2,69 @@ import templateStr from './FilePopup.js';
 import { Block } from './../../libs/block.js';
 
 export class FilePopup extends Block {
+  file: File | null;
   constructor(props: object) {
     super('div', ['chat-popup', 'hidden'], props);
+
+    this.file = null;
   }
 
   render() {
-    // @ts-ignore
     let template = Handlebars.compile(templateStr);
     return template(this.props);
   }
+
+  mounted() {
+    this.initActions();
+  }
+
+  updated() {
+    this.initActions();
+  }
+
+  initActions() {
+    const inputElement = this._element.querySelector('input');
+    const buttonElement = this._element.querySelector('button');
+
+    if (inputElement && buttonElement) {
+      inputElement.addEventListener('change', (event: Event) => {
+        if (event.target) {
+          this.file = event.target.files[0];
+
+          if (this.file) {
+            this.setProps({
+              label: this.file.name
+            })
+
+            let invalidElem = this._element.querySelector('.chat-btn-invalid');
+            if (invalidElem) {
+              invalidElem.hidden = true;
+            }
+          }
+        }
+      });
+
+      buttonElement.addEventListener('click', event => {
+        if (!event.target) return;
+
+        if (!this.file) {
+          let invalidElem = this._element.querySelector('.chat-btn-invalid');
+          if (invalidElem) {
+            invalidElem.hidden = false;
+          }
+
+          return;
+        }
+
+        this.submit(this.file);
+        this.file = null;
+
+        this._element.classList.add('hidden');
+      });
+    }
+  }
+
+  submit(file: File) {}
 
   show(props?: object) {
     if (props) {

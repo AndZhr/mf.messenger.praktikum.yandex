@@ -6,8 +6,8 @@ export default `
       <input id="file-input" type="file">
     </div>
     <div class="chat-popup__btn">
-      <button class="chat-main-btn" type="submit">{{ btnText }}</button>
+      <button class="chat-main-btn">{{ btnText }}</button>
     </div>
-    <div class="chat-btn-invalid">Необходимо выбрать файл</div>
+    <div class="chat-btn-invalid" hidden>Необходимо выбрать файл</div>
   </div>
 `;
