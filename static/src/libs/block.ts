@@ -18,7 +18,7 @@ export class Block {
     elementClasses: string[],
     props: object
   };
-  props: object;
+  props: SimpleObject;
   eventBus: () => EventBus
 
   constructor(tagName: string = 'div', elementClasses: string[], props: object = {}) {
@@ -72,7 +72,7 @@ export class Block {
     if (!response) {
       return;
     }
-
+    
     this._render();
     this.updated();
   }
@@ -82,6 +82,10 @@ export class Block {
   }
 
   isEqual(a: SimpleObject, b: SimpleObject): boolean {
+    if (Object.keys(a).length !== Object.keys(b).length) {
+      return false;
+    }
+
     for (let key of Object.keys(a)) {
       if ((a[key] && typeof a[key] === 'object') && (b[key] && typeof b[key] === 'object')) {
         if (!this.isEqual(a[key], b[key])) {

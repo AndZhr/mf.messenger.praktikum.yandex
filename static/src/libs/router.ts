@@ -42,7 +42,7 @@ export class Router {
   start() {
     window.onpopstate = (event: PopStateEvent) => {
       let target: any = event.target;
-      
+
       if (target && target.location) {
         this._onRoute(target.location.pathname);
       }
@@ -73,8 +73,14 @@ export class Router {
   }
 
   go(pathname: string) {
-    this.history.pushState({}, "", pathname);
-    this._onRoute(pathname);
+    if (this.beforeGo(window.location.pathname, pathname)) {
+      this.history.pushState({}, "", pathname);
+      this._onRoute(pathname);
+    }
+  }
+
+  beforeGo(from: string, to: string) {
+    return true;
   }
 
   back() {
