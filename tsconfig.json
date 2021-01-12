@@ -15,8 +15,5 @@
       }
     ]
   },
-  "exclude": [
-    "test",
-    "node_modules"
-  ]
+  "include": ["static/src/**/*"]
 }
