@@ -1,7 +1,7 @@
 import { Block } from './../libs/block';
 import { inputsValidate } from './../libs/form-validate';
 import { Button } from './../components/Button/index';
-import formTemplate from './templates/register.tmp';
+import formTemplate from './templates/register-tmp';
 import { AuthAPI } from './../api/auth-api';
 
 const formData = {

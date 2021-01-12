@@ -2,7 +2,7 @@ import { Block } from './../libs/block';
 import { inputsValidate } from './../libs/form-validate';
 import { FilePopup } from './../components/FilePopup/index';
 import { Button } from './../components/Button/index';
-import profileTemplate from './templates/profile.tmp';
+import profileTemplate from './templates/profile-tmp';
 import { AuthAPI } from './../api/auth-api';
 import { UserAPI } from './../api/user-api';
 import { Router } from './../libs/router';

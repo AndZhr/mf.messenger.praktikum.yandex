@@ -4,9 +4,9 @@ import { InputPopup } from './../components/InputPopup/index';
 import { OptionsPopup } from './../components/OptionsPopup/index';
 import { ButtonPopup } from './../components/ButtonPopup/index';
 import { Button } from './../components/Button/index';
-import chatListTemplate from './templates/chat-list.tmp';
-import chatListContainerTemplate from './templates/chat-list-container.tmp';
-import chatTemplate from './templates/chat.tmp';
+import chatListTemplate from './templates/chat-list-tmp';
+import chatListContainerTemplate from './templates/chat-list-container-tmp';
+import chatTemplate from './templates/chat-tmp';
 import { ChatAPI } from './../api/chat-api';
 import { UserAPI } from './../api/user-api';
 

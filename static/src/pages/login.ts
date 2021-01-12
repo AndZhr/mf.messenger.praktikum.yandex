@@ -1,7 +1,7 @@
 import { Block } from './../libs/block';
 import { inputsValidate } from './../libs/form-validate';
 import { Button } from './../components/Button/index';
-import formTemplate from './templates/login.tmp';
+import formTemplate from './templates/login-tmp';
 import { AuthAPI } from './../api/auth-api';
 import { Router } from './../libs/router';
 import { app } from './../app';
