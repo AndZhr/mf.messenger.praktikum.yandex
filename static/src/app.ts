@@ -1,12 +1,12 @@
-import { Router } from './libs/router.js';
-import { AuthAPI } from './api/auth-api.js'
+import { Router } from './libs/router';
+import { AuthAPI } from './api/auth-api'
 
-import { Login } from './pages/login.js';
-import { Register } from './pages/register.js';
-import { Chats } from './pages/chat.js';
-import { Profile } from './pages/profile.js';
-import { Error404 } from './pages/error-404.js';
-import { Error500 } from './pages/error-500.js';
+import { Login } from './pages/login';
+import { Register } from './pages/register';
+import { Chats } from './pages/chat';
+import { Profile } from './pages/profile';
+import { Error404 } from './pages/error-404';
+import { Error500 } from './pages/error-500';
 
 export const router = new Router('#app');
 

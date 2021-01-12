@@ -1,8 +1,8 @@
-import { Block } from './../libs/block.js';
-import { inputsValidate } from './../libs/form-validate.js';
-import { Button } from './../components/Button/index.js';
-import formTemplate from './templates/register.tmp.js';
-import { AuthAPI } from './../api/auth-api.js';
+import { Block } from './../libs/block';
+import { inputsValidate } from './../libs/form-validate';
+import { Button } from './../components/Button/index';
+import formTemplate from './templates/register.tmp';
+import { AuthAPI } from './../api/auth-api';
 
 const formData = {
   formValid: {

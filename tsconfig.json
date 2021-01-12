@@ -7,6 +7,15 @@
     "noUnusedParameters": true,
     "alwaysStrict": true,
     "sourceMap": true,
-    "strictNullChecks": true
-  }
+    "strictNullChecks": true,
+    "plugins": [
+      {
+        "transform": "@zoltu/typescript-transformer-append-js-extension/output/index.js",
+        "after": true
+      }
+    ]
+  },
+  "exclude": [
+    "test"
+  ]
 }

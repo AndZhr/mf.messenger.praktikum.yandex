@@ -1,10 +1,10 @@
-import { Block } from './../libs/block.js';
-import { inputsValidate } from './../libs/form-validate.js';
-import { Button } from './../components/Button/index.js';
-import formTemplate from './templates/login.tmp.js';
-import { AuthAPI } from './../api/auth-api.js';
-import { Router } from './../libs/router.js';
-import { app } from './../app.js';
+import { Block } from './../libs/block';
+import { inputsValidate } from './../libs/form-validate';
+import { Button } from './../components/Button/index';
+import formTemplate from './templates/login.tmp';
+import { AuthAPI } from './../api/auth-api';
+import { Router } from './../libs/router';
+import { app } from './../app';
 
 const router = new Router('#app');
 

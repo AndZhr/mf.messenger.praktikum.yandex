@@ -1,5 +1,5 @@
-import templateStr from './ButtonPopup.js';
-import { Block } from './../../libs/block.js';
+import templateStr from './ButtonPopup';
+import { Block } from './../../libs/block';
 
 export class ButtonPopup extends Block {
   constructor(props: object) {

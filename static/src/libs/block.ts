@@ -1,4 +1,4 @@
-import { EventBus } from './event-bus.js';
+import { EventBus } from './event-bus';
 
 interface SimpleObject {
     [key: string]: any
@@ -72,7 +72,7 @@ export class Block {
     if (!response) {
       return;
     }
-    
+
     this._render();
     this.updated();
   }

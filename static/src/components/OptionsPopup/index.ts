@@ -1,5 +1,5 @@
-import templateStr from './OptionsPopup.js';
-import { Block } from './../../libs/block.js';
+import templateStr from './OptionsPopup';
+import { Block } from './../../libs/block';
 
 export class OptionsPopup extends Block {
   constructor(props: object) {

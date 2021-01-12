@@ -1,5 +1,5 @@
-import { Block } from './../libs/block.js';
-import formTemplate from './templates/error.tmp.js';
+import { Block } from './../libs/block';
+import formTemplate from './templates/error.tmp';
 
 const pageData = {
   title: '500',

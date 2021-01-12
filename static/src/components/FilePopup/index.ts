@@ -1,5 +1,5 @@
-import templateStr from './FilePopup.js';
-import { Block } from './../../libs/block.js';
+import templateStr from './FilePopup';
+import { Block } from './../../libs/block';
 
 export class FilePopup extends Block {
   file: File | null;

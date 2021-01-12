@@ -1,12 +1,12 @@
-import { Block } from './../libs/block.js';
-import { inputsValidate } from './../libs/form-validate.js';
-import { FilePopup } from './../components/FilePopup/index.js';
-import { Button } from './../components/Button/index.js';
-import profileTemplate from './templates/profile.tmp.js';
-import { AuthAPI } from './../api/auth-api.js';
-import { UserAPI } from './../api/user-api.js';
-import { Router } from './../libs/router.js';
-import { app } from './../app.js';
+import { Block } from './../libs/block';
+import { inputsValidate } from './../libs/form-validate';
+import { FilePopup } from './../components/FilePopup/index';
+import { Button } from './../components/Button/index';
+import profileTemplate from './templates/profile.tmp';
+import { AuthAPI } from './../api/auth-api';
+import { UserAPI } from './../api/user-api';
+import { Router } from './../libs/router';
+import { app } from './../app';
 
 const router = new Router('#app');
 

@@ -1,14 +1,14 @@
-import { Block } from './../libs/block.js';
-import { FilePopup } from './../components/FilePopup/index.js';
-import { InputPopup } from './../components/InputPopup/index.js';
-import { OptionsPopup } from './../components/OptionsPopup/index.js';
-import { ButtonPopup } from './../components/ButtonPopup/index.js';
-import { Button } from './../components/Button/index.js';
-import chatListTemplate from './templates/chat-list.tmp.js';
-import chatListContainerTemplate from './templates/chat-list-container.tmp.js';
-import chatTemplate from './templates/chat.tmp.js';
-import { ChatAPI } from './../api/chat-api.js';
-import { UserAPI } from './../api/user-api.js';
+import { Block } from './../libs/block';
+import { FilePopup } from './../components/FilePopup/index';
+import { InputPopup } from './../components/InputPopup/index';
+import { OptionsPopup } from './../components/OptionsPopup/index';
+import { ButtonPopup } from './../components/ButtonPopup/index';
+import { Button } from './../components/Button/index';
+import chatListTemplate from './templates/chat-list.tmp';
+import chatListContainerTemplate from './templates/chat-list-container.tmp';
+import chatTemplate from './templates/chat.tmp';
+import { ChatAPI } from './../api/chat-api';
+import { UserAPI } from './../api/user-api';
 
 interface SimpleObject {
     [key: string]: any
@@ -158,7 +158,7 @@ class ChatList extends Block {
 
       if (chatListItem) {
         event.stopPropagation();
-        
+
         let chatId: string | number = chatListItem.id;
 
         if (chatId === 'add-chat') {

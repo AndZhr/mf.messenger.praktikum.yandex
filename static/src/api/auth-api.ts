@@ -1,4 +1,4 @@
-import request from './../libs/request.js';
+import request from './../libs/request';
 
 export class AuthAPI {
    signup(fields: any): Promise<XMLHttpRequest> {
