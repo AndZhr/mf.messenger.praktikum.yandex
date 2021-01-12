@@ -1,5 +1,6 @@
-type formData = {
-  formValid: {[key: string]: boolean};
+interface formData {
+  formValid?: {[key: string]: boolean};
+  [key: string]: any;
 }
 
 const regexpObj: {[key: string]: RegExp} = {
@@ -16,7 +17,7 @@ const regexpObj: {[key: string]: RegExp} = {
   'new_password_confirm': /^.{8,}$/
 };
 
-export function inputsValidate(event: Event, formData: formData, formElem: HTMLFormElement | null): boolean {
+export function inputsValidate(event: Event, formData: formData, formElem: HTMLFormElement | HTMLElement | null): boolean {
   if (!event || !event.type || !formElem) return false;
 
   if (event.type === 'blur') {
@@ -24,7 +25,7 @@ export function inputsValidate(event: Event, formData: formData, formElem: HTMLF
 
     if (!isInputElement(input)) return false;
 
-    if (input.name && input.name in regexpObj) {
+    if (input.name && input.name in regexpObj && formData.formValid) {
       formData.formValid[input.name] = regexpObj[input.name].test(input.value);
 
       let invalidDiv: HTMLDivElement | null = document.querySelector(`[data-input-name=${input.name}]`);
@@ -38,7 +39,7 @@ export function inputsValidate(event: Event, formData: formData, formElem: HTMLF
     let inputs: NodeListOf<HTMLInputElement> = formElem.querySelectorAll('input');
 
     for (let input of inputs) {
-      if (!(input.name in regexpObj)) continue;
+      if (!(input.name in regexpObj) || !formData.formValid) continue;
 
       formData.formValid[input.name] = regexpObj[input.name].test(input.value);
 
@@ -50,6 +51,8 @@ export function inputsValidate(event: Event, formData: formData, formElem: HTMLF
 
     }
   }
+
+  if (!formData.formValid) return false;
 
   let formIsValid: boolean = true;
 

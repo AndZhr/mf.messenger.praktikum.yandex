@@ -48,7 +48,7 @@ class App {
 
 export const app = new App();
 
-router.beforeGo = (from, to): boolean => {
+router.beforeGo = (_from, to): boolean => {
   if (app.store.isLogin) {
     if ((to !== '/login') && (to !== '/register')) {
       return true;
@@ -70,7 +70,7 @@ const appElement: HTMLElement | null = document.querySelector('#app');
 
 if (appElement) {
   appElement.addEventListener('click', event => {
-    if (event.target && event.target.dataset.link) {
+    if (event.target && event.target instanceof HTMLDivElement && event.target.dataset.link) {
       event.preventDefault();
 
       router.go(event.target.dataset.link);

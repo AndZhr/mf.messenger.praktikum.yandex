@@ -7,7 +7,6 @@ export class Button extends Block {
   }
 
   render() {
-    // @ts-ignore
     let template = Handlebars.compile(templateStr);
     return template(this.props);
   }

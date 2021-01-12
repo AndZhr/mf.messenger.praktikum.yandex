@@ -33,14 +33,14 @@ export class InputPopup extends Block {
       formElement.addEventListener('submit', event => {
         event.preventDefault();
 
-        if (!event.target) return;
+        if (!event.target || !(event.target instanceof HTMLElement) || !event.target.dataset.actionType) return;
 
         let actionType = event.target.dataset.actionType;
         let input = inputElement.value;
 
         if (!input) {
           let invalidElem = this._element.querySelector('.chat-input__invalid');
-          if (invalidElem) {
+          if (invalidElem && invalidElem instanceof HTMLElement) {
             invalidElem.hidden = false;
           }
 
@@ -54,7 +54,7 @@ export class InputPopup extends Block {
     }
   }
 
-  submit(actionType: string, input: string) {}
+  submit(_actionType: string, _input: string) {}
 
   show(props?: object) {
     if (props) {

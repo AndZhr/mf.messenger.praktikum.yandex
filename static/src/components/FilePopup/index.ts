@@ -28,7 +28,7 @@ export class FilePopup extends Block {
 
     if (inputElement && buttonElement) {
       inputElement.addEventListener('change', (event: Event) => {
-        if (event.target) {
+        if (event.target && event.target instanceof HTMLInputElement && event.target.files) {
           this.file = event.target.files[0];
 
           if (this.file) {
@@ -37,7 +37,7 @@ export class FilePopup extends Block {
             })
 
             let invalidElem = this._element.querySelector('.chat-btn-invalid');
-            if (invalidElem) {
+            if (invalidElem && invalidElem instanceof HTMLElement) {
               invalidElem.hidden = true;
             }
           }
@@ -49,7 +49,7 @@ export class FilePopup extends Block {
 
         if (!this.file) {
           let invalidElem = this._element.querySelector('.chat-btn-invalid');
-          if (invalidElem) {
+          if (invalidElem && invalidElem instanceof HTMLElement) {
             invalidElem.hidden = false;
           }
 
@@ -64,7 +64,7 @@ export class FilePopup extends Block {
     }
   }
 
-  submit(file: File) {}
+  submit(_file: File) {}
 
   show(props?: object) {
     if (props) {

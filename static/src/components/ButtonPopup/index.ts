@@ -7,7 +7,6 @@ export class ButtonPopup extends Block {
   }
 
   render() {
-    // @ts-ignore
     let template = Handlebars.compile(templateStr);
     return template(this.props);
   }
@@ -30,14 +29,16 @@ export class ButtonPopup extends Block {
       });
 
       submitBtn.addEventListener('click', () => {
-        this.submit(submitBtn.dataset.actionType);
+        if (submitBtn instanceof HTMLButtonElement && submitBtn.dataset.actionType) {
+          this.submit(submitBtn.dataset.actionType);
 
-        this._element.classList.add('hidden');
+          this._element.classList.add('hidden');
+        }
       });
     }
   }
 
-  submit(action: string) {}
+  submit(_action: string) {}
 
   show(props?: object) {
     if (props) {

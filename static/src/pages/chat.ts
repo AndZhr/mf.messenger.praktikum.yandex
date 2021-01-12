@@ -93,7 +93,7 @@ class ChatList extends Block {
       action: 'add-chat'
     });
 
-    this.inputPopup.submit = (actionType: string, input: string) => {
+    this.inputPopup.submit = (_actionType: string, input: string) => {
       new ChatAPI().createChat(input).then(xhr => {
         if (xhr.status === 200) {
           this.requestChatList();

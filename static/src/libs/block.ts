@@ -1,7 +1,8 @@
 import { EventBus } from './event-bus';
 
 interface SimpleObject {
-    [key: string]: any
+  formValid?: {[key: string]: boolean};
+  [key: string]: any;
 }
 
 export class Block {

@@ -79,7 +79,7 @@ export class Router {
     }
   }
 
-  beforeGo(from: string, to: string) {
+  beforeGo(_from: string, _to: string) {
     return true;
   }
 
