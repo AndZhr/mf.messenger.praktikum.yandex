@@ -70,7 +70,7 @@ const appElement: HTMLElement | null = document.querySelector('#app');
 
 if (appElement) {
   appElement.addEventListener('click', event => {
-    if (event.target && event.target instanceof HTMLDivElement && event.target.dataset.link) {
+    if (event.target && event.target instanceof HTMLElement && event.target.dataset.link) {
       event.preventDefault();
 
       router.go(event.target.dataset.link);
