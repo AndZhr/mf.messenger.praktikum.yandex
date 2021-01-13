@@ -38,8 +38,7 @@ export class Profile extends Block {
   }
 
   render() {
-    let template = Handlebars.compile(profileTemplate);
-    return template(this.props);
+    return Handlebars.compile(profileTemplate)(this.props);
   }
 
   appendToHTML(query: string, block: any): void {

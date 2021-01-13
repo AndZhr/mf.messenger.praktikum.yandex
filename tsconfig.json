@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "static/dist",
+    "outDir": "dist",
     "target": "es2017",
     "noImplicitAny": true,
     "noUnusedLocals": true,
@@ -15,5 +15,5 @@
       }
     ]
   },
-  "include": ["static/src/**/*"]
+  "include": ["src/**/*"]
 }

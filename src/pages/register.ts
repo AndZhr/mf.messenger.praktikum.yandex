@@ -47,8 +47,7 @@ export class Register extends Block {
   }
 
   render() {
-    let template = Handlebars.compile(formTemplate);
-    return template(this.props);
+    return Handlebars.compile(formTemplate)(this.props);
   }
 
   submitForm(event: Event): void {

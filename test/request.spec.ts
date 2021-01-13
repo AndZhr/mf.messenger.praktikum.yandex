@@ -7,6 +7,6 @@ describe('Request', () => {
   });
 
   it('Проверяем что метод возвращает Promise', () => {
-    expect(request('/')).to.be.an.instanceof(Promise);;
+    expect(request('/')).to.be.an.instanceof(Promise);
   });
 });

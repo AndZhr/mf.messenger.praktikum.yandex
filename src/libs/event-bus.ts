@@ -1,6 +1,6 @@
-interface FunctionObject {
+type FunctionObject = {
     [key: string]: Array<(...args: any) => void>
-}
+};
 
 export class EventBus {
   listeners: FunctionObject;

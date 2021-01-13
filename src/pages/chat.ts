@@ -10,13 +10,13 @@ import chatTemplate from './templates/chat-tmp';
 import { ChatAPI } from './../api/chat-api';
 import { UserAPI } from './../api/user-api';
 
-interface SimpleObject {
+type SimpleObject = {
     [key: string]: any
-}
+};
 
-interface ChatListInter {
+type ChatListInter = {
   chatsList: SimpleObject[]
-}
+};
 
 const chatListData: ChatListInter = {
   chatsList: []
@@ -37,8 +37,7 @@ class ChatListBody extends Block {
   }
 
   render() {
-    let template = Handlebars.compile(chatListTemplate);
-    return template(this.props);
+    return Handlebars.compile(chatListTemplate)(this.props);
   }
 
   mounted() {
@@ -114,8 +113,7 @@ class ChatList extends Block {
   }
 
   render() {
-    let template = Handlebars.compile(chatListContainerTemplate);
-    return template(this.props);
+    return Handlebars.compile(chatListContainerTemplate)(this.props);
   }
 
   requestChatList() {
@@ -249,8 +247,7 @@ class ChatBody extends Block {
   }
 
   render() {
-    let template = Handlebars.compile(chatTemplate);
-    return template(this.props);
+    return Handlebars.compile(chatTemplate)(this.props);
   }
 
   appendToHTML(query: string, block: any): void {

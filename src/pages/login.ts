@@ -46,8 +46,7 @@ export class Login extends Block {
   }
 
   render(): string {
-    let template = Handlebars.compile(formTemplate);
-    return template(this.props);
+    return Handlebars.compile(formTemplate)(this.props);
   }
 
   submitForm(event: Event): void {

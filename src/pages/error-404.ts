@@ -14,7 +14,6 @@ export class Error404 extends Block {
   }
 
   render(): string {
-    let template = Handlebars.compile(formTemplate);
-    return template(this.props);
+    return Handlebars.compile(formTemplate)(this.props);
   }
 }

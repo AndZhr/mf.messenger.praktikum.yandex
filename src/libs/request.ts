@@ -56,13 +56,12 @@ function queryStringify(data: PlainObject<any>, parentKey?: string, result?: URL
 
   for (let [key, value] of Object.entries(data)) {
     if (value && typeof value === 'object') {
-      queryStringify(value, getKey(key, parentKey), result)
+      queryStringify(value, getKey(key, parentKey), result);
 
     } else {
       result.append(getKey(key, parentKey), String(value));
     }
   }
-
 
   return result.toString();
 }

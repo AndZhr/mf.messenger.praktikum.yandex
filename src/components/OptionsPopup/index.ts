@@ -1,24 +1,17 @@
-import templateStr from './InputPopup';
+import templateStr from './OptionsPopup';
 import { Block } from './../../libs/block';
 
-export class InputPopup extends Block {
+export class OptionsPopup extends Block {
   constructor(props: object) {
     super('div', ['chat-popup', 'hidden'], props);
   }
 
   render() {
-    let template = Handlebars.compile(templateStr);
-    return template(this.props);
+    return Handlebars.compile(templateStr)(this.props);
   }
 
   mounted() {
     this.initActions();
-
-    document.addEventListener('click', event => {
-      if (event.target) {
-        this.hide(event.target);
-      }
-    });
   }
 
   updated() {
@@ -27,16 +20,16 @@ export class InputPopup extends Block {
 
   initActions() {
     const formElement = this._element.querySelector('form');
-    const inputElement = this._element.querySelector('input');
+    const selectElement = this._element.querySelector('select');
 
-    if (formElement && inputElement) {
+    if (formElement && selectElement) {
       formElement.addEventListener('submit', event => {
         event.preventDefault();
 
         if (!event.target || !(event.target instanceof HTMLElement) || !event.target.dataset.actionType) return;
 
         let actionType = event.target.dataset.actionType;
-        let input = inputElement.value;
+        let input = selectElement.value;
 
         if (!input) {
           let invalidElem = this._element.querySelector('.chat-input__invalid');

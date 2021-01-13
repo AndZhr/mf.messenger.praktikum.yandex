@@ -1,9 +1,5 @@
 node_modules/
 
-static/dist/*
-!static/dist/libs/
-
-static/dist/libs/*
-!static/dist/libs/handlebars.min-v4.7.6.js
+dist/
 
 .DS_Store

@@ -1,7 +1,7 @@
-interface formData {
+type formData = {
   formValid?: {[key: string]: boolean};
   [key: string]: any;
-}
+};
 
 const regexpObj: {[key: string]: RegExp} = {
   email: /^\S+@\S+\.\S+$/,

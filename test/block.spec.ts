@@ -45,14 +45,18 @@ describe('Block:', () => {
       expect(block.isEqual).to.exist;
     });
 
-    it('Проверяем что метод корректно сравнивает объекты', () => {
+    it('Проверяем что метод корректно сравнивает объекты с примитивами', () => {
       expect(block.isEqual({ a: 1 }, { a: 1 })).to.be.true;
+
+      expect(block.isEqual({ a: 1 }, { a: 2 })).to.be.false;
+    });
+
+    it('Проверяем что метод корректно сравнивает объекты с вложенными структурами', () => {
       expect(block.isEqual(
         { a: 1, b: { c: { d: [1, 2, 3, 4] } } },
         { a: 1, b: { c: { d: [1, 2, 3, 4] } } }
       )).to.be.true;
 
-      expect(block.isEqual({ a: 1 }, { a: 2 })).to.be.false;
       expect(block.isEqual(
         { a: 1, b: { c: { d: [1, 2, 3, 4] } } },
         { a: 1, b: { c: { d: [1, 3, 3, 4] } } }
