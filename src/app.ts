@@ -8,6 +8,8 @@ import { Profile } from './pages/profile';
 import { Error404 } from './pages/error-404';
 import { Error500 } from './pages/error-500';
 
+import './styles/index.scss';
+
 export const router = new Router('#app');
 
 router

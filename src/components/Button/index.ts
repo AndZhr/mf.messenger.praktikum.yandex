@@ -1,4 +1,4 @@
-import templateStr from './Button';
+import templateStr from './Button.hbs';
 import { Block } from './../../libs/block';
 
 export class Button extends Block {
@@ -7,6 +7,6 @@ export class Button extends Block {
   }
 
   render() {
-    return Handlebars.compile(templateStr)(this.props);
+    return templateStr(this.props);
   }
 }

@@ -1,7 +1,7 @@
 import { Block } from './../libs/block';
 import { inputsValidate } from './../libs/form-validate';
 import { Button } from './../components/Button/index';
-import formTemplate from './templates/login-tmp';
+import formTemplate from './templates/login.hbs';
 import { AuthAPI } from './../api/auth-api';
 import { Router } from './../libs/router';
 import { app } from './../app';
@@ -46,7 +46,7 @@ export class Login extends Block {
   }
 
   render(): string {
-    return Handlebars.compile(formTemplate)(this.props);
+    return formTemplate(this.props);
   }
 
   submitForm(event: Event): void {

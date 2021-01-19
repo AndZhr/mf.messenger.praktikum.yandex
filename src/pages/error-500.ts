@@ -1,5 +1,5 @@
 import { Block } from './../libs/block';
-import formTemplate from './templates/error-tmp';
+import formTemplate from './templates/error.hbs';
 
 const pageData = {
   title: '500',
@@ -14,6 +14,6 @@ export class Error500 extends Block {
   }
 
   render(): string {
-    return Handlebars.compile(formTemplate)(this.props);
+    return formTemplate(this.props);
   }
 }

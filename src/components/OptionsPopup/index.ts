@@ -1,4 +1,4 @@
-import templateStr from './OptionsPopup';
+import templateStr from './OptionsPopup.hbs';
 import { Block } from './../../libs/block';
 
 export class OptionsPopup extends Block {
@@ -7,7 +7,7 @@ export class OptionsPopup extends Block {
   }
 
   render() {
-    return Handlebars.compile(templateStr)(this.props);
+    return templateStr(this.props);
   }
 
   mounted() {

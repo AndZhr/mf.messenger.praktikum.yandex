@@ -1,7 +1,7 @@
 import { Block } from './../libs/block';
 import { inputsValidate } from './../libs/form-validate';
 import { Button } from './../components/Button/index';
-import formTemplate from './templates/register-tmp';
+import formTemplate from './templates/register.hbs';
 import { AuthAPI } from './../api/auth-api';
 
 const formData = {
@@ -47,7 +47,7 @@ export class Register extends Block {
   }
 
   render() {
-    return Handlebars.compile(formTemplate)(this.props);
+    return formTemplate(this.props);
   }
 
   submitForm(event: Event): void {

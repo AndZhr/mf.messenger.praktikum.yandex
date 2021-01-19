@@ -4,9 +4,9 @@ import { InputPopup } from './../components/InputPopup/index';
 import { OptionsPopup } from './../components/OptionsPopup/index';
 import { ButtonPopup } from './../components/ButtonPopup/index';
 import { Button } from './../components/Button/index';
-import chatListTemplate from './templates/chat-list-tmp';
-import chatListContainerTemplate from './templates/chat-list-container-tmp';
-import chatTemplate from './templates/chat-tmp';
+import chatListTemplate from './templates/chat-list.hbs';
+import chatListContainerTemplate from './templates/chat-list-container.hbs';
+import chatTemplate from './templates/chat.hbs';
 import { ChatAPI } from './../api/chat-api';
 import { UserAPI } from './../api/user-api';
 
@@ -37,7 +37,7 @@ class ChatListBody extends Block {
   }
 
   render() {
-    return Handlebars.compile(chatListTemplate)(this.props);
+    return chatListTemplate(this.props);
   }
 
   mounted() {
@@ -113,7 +113,7 @@ class ChatList extends Block {
   }
 
   render() {
-    return Handlebars.compile(chatListContainerTemplate)(this.props);
+    return chatListContainerTemplate(this.props);
   }
 
   requestChatList() {
@@ -247,7 +247,7 @@ class ChatBody extends Block {
   }
 
   render() {
-    return Handlebars.compile(chatTemplate)(this.props);
+    return chatTemplate(this.props);
   }
 
   appendToHTML(query: string, block: any): void {

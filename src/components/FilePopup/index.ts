@@ -1,4 +1,4 @@
-import templateStr from './FilePopup';
+import templateStr from './FilePopup.hbs';
 import { Block } from './../../libs/block';
 
 export class FilePopup extends Block {
@@ -10,7 +10,7 @@ export class FilePopup extends Block {
   }
 
   render() {
-    return Handlebars.compile(templateStr)(this.props);
+    return templateStr(this.props);
   }
 
   mounted() {
