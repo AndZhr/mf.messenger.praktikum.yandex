@@ -4,5 +4,5 @@
 
 ### Ссылки
 
-- [Сайт проекта](https://agitated-clarke-97371f.netlify.app/)
+- [Сайт проекта](https://andzhr-app.herokuapp.com/)
 - [Дизайн макет проекта](https://www.figma.com/file/CzBFjRK82FoIRlVhHeeOWx/Chat?node-id=0%3A1)
