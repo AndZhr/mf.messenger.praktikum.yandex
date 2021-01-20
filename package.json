@@ -9,6 +9,12 @@
     "test": "./node_modules/.bin/mocha",
     "lint": "./node_modules/.bin/eslint ./src --ext .ts,.js"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run test && npm run lint",
+      "pre-push": "npm run test && npm run lint"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AndZhr/mf.messenger.praktikum.yandex.git"
@@ -40,6 +46,7 @@
     "global-jsdom": "7.0.0",
     "handlebars-loader": "1.7.1",
     "html-webpack-plugin": "4.5.1",
+    "husky": "4.3.8",
     "jsdom": "16.4.0",
     "mini-css-extract-plugin": "1.3.4",
     "mocha": "8.2.1",
