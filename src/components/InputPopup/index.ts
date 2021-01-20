@@ -2,15 +2,15 @@ import templateStr from './InputPopup.hbs';
 import { Block } from './../../libs/block';
 
 export class InputPopup extends Block {
-  constructor(props: object) {
+  constructor(props: SimpleObject) {
     super('div', ['chat-popup', 'hidden'], props);
   }
 
-  render() {
+  render(): string {
     return templateStr(this.props);
   }
 
-  mounted() {
+  mounted(): void {
     this.initActions();
 
     document.addEventListener('click', event => {
@@ -20,11 +20,11 @@ export class InputPopup extends Block {
     });
   }
 
-  updated() {
+  updated(): void {
     this.initActions();
   }
 
-  initActions() {
+  initActions(): void {
     const formElement = this._element.querySelector('form');
     const inputElement = this._element.querySelector('input');
 
@@ -32,13 +32,14 @@ export class InputPopup extends Block {
       formElement.addEventListener('submit', event => {
         event.preventDefault();
 
-        if (!event.target || !(event.target instanceof HTMLElement) || !event.target.dataset.actionType) return;
+        if (!event.target
+          || !(event.target instanceof HTMLElement) || !event.target.dataset.actionType) return;
 
-        let actionType = event.target.dataset.actionType;
-        let input = inputElement.value;
+        const actionType = event.target.dataset.actionType;
+        const input = inputElement.value;
 
         if (!input) {
-          let invalidElem = this._element.querySelector('.chat-input__invalid');
+          const invalidElem = this._element.querySelector('.chat-input__invalid');
           if (invalidElem && invalidElem instanceof HTMLElement) {
             invalidElem.hidden = false;
           }
@@ -53,9 +54,10 @@ export class InputPopup extends Block {
     }
   }
 
-  submit(_actionType: string, _input: string) {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
+  submit(_actionType: string, _input: string): void {}
 
-  show(props?: object) {
+  show(props?: SimpleObject): void {
     if (props) {
       this.setProps(props);
     }

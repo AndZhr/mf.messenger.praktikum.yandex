@@ -1,5 +1,5 @@
 import { Router } from './libs/router';
-import { AuthAPI } from './api/auth-api'
+import { AuthAPI } from './api/auth-api';
 
 import { Login } from './pages/login';
 import { Register } from './pages/register';
@@ -28,21 +28,19 @@ class App {
   constructor() {
     this.store = {
       isLogin: false
-    }
+    };
 
-    new AuthAPI().userInfo().then(xhr => {
+    AuthAPI.userInfo().then(xhr => {
       this.store.isLogin = (xhr.status === 200);
 
-      let currentLocation = window.location.pathname;
+      const currentLocation = window.location.pathname;
 
       if (this.store.isLogin) {
         if ((currentLocation === '/login') || (currentLocation === '/register')) {
-          router.go('/')
+          router.go('/');
         }
-      } else {
-        if ((currentLocation !== '/login') && (currentLocation !== '/register')) {
-          router.go('/login')
-        }
+      } else if ((currentLocation !== '/login') && (currentLocation !== '/register')) {
+        router.go('/login');
       }
     });
   }
@@ -54,19 +52,14 @@ router.beforeGo = (_from, to): boolean => {
   if (app.store.isLogin) {
     if ((to !== '/login') && (to !== '/register')) {
       return true;
-    } else {
-      return false;
     }
-
-  } else {
-    if ((to === '/login') || (to === '/register')) {
-      return true;
-    } else {
-      return false;
-    }
-
+    return false;
   }
-}
+  if ((to === '/login') || (to === '/register')) {
+    return true;
+  }
+  return false;
+};
 
 const appElement: HTMLElement | null = document.querySelector('#app');
 

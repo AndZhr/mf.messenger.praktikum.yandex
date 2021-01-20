@@ -2,23 +2,23 @@ import templateStr from './ButtonPopup.hbs';
 import { Block } from './../../libs/block';
 
 export class ButtonPopup extends Block {
-  constructor(props: object) {
+  constructor(props: SimpleObject) {
     super('div', ['chat-popup', 'hidden'], props);
   }
 
-  render() {
+  render():string {
     return templateStr(this.props);
   }
 
-  mounted() {
+  mounted(): void {
     this.initActions();
   }
 
-  updated() {
+  updated(): void {
     this.initActions();
   }
 
-  initActions() {
+  initActions(): void {
     const сancelBtn = this._element.querySelector('[data-btn-type=сancel]');
     const submitBtn = this._element.querySelector('[data-btn-type=submit]');
 
@@ -37,9 +37,10 @@ export class ButtonPopup extends Block {
     }
   }
 
-  submit(_action: string) {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
+  submit(_action: string): void {}
 
-  show(props?: object) {
+  show(props?: SimpleObject): void {
     if (props) {
       this.setProps(props);
     }

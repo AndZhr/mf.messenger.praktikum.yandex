@@ -17,5 +17,9 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+        "no-use-before-define": ["error", { "functions": false, "classes": false }],
+        "max-classes-per-file": "off",
+        "class-methods-use-this": "off"
     }
 }

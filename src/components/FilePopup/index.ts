@@ -3,25 +3,26 @@ import { Block } from './../../libs/block';
 
 export class FilePopup extends Block {
   file: File | null;
-  constructor(props: object) {
+
+  constructor(props: SimpleObject) {
     super('div', ['chat-popup', 'hidden'], props);
 
     this.file = null;
   }
 
-  render() {
+  render(): string {
     return templateStr(this.props);
   }
 
-  mounted() {
+  mounted(): void {
     this.initActions();
   }
 
-  updated() {
+  updated(): void {
     this.initActions();
   }
 
-  initActions() {
+  initActions(): void {
     const inputElement = this._element.querySelector('input');
     const buttonElement = this._element.querySelector('button');
 
@@ -33,9 +34,9 @@ export class FilePopup extends Block {
           if (this.file) {
             this.setProps({
               label: this.file.name
-            })
+            });
 
-            let invalidElem = this._element.querySelector('.chat-btn-invalid');
+            const invalidElem = this._element.querySelector('.chat-btn-invalid');
             if (invalidElem && invalidElem instanceof HTMLElement) {
               invalidElem.hidden = true;
             }
@@ -47,7 +48,7 @@ export class FilePopup extends Block {
         if (!event.target) return;
 
         if (!this.file) {
-          let invalidElem = this._element.querySelector('.chat-btn-invalid');
+          const invalidElem = this._element.querySelector('.chat-btn-invalid');
           if (invalidElem && invalidElem instanceof HTMLElement) {
             invalidElem.hidden = false;
           }
@@ -63,9 +64,10 @@ export class FilePopup extends Block {
     }
   }
 
-  submit(_file: File) {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
+  submit(_file: File): void {}
 
-  show(props?: object) {
+  show(props?: SimpleObject): void {
     if (props) {
       this.setProps(props);
     }

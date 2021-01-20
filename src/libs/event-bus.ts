@@ -1,5 +1,5 @@
 type FunctionObject = {
-    [key: string]: Array<(...args: any) => void>
+    [key: string]: Array<(...args: unknown[]) => void>
 };
 
 export class EventBus {
@@ -9,7 +9,7 @@ export class EventBus {
     this.listeners = {};
   }
 
-  on(event: string, callback: (...args: any) => void) {
+  on(event: string, callback: (...args: unknown[]) => void): void {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
@@ -17,8 +17,8 @@ export class EventBus {
     this.listeners[event].push(callback);
   }
 
-  off(event: string, callback: (...args: any) => void) {
-		if (!this.listeners[event]) {
+  off(event: string, callback: (...args: unknown[]) => void): void {
+    if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
 
@@ -27,12 +27,12 @@ export class EventBus {
     );
   }
 
-	emit(event: string, ...args: any) {
+  emit(event: string, ...args: unknown[]): void {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
 
-    this.listeners[event].forEach((listener: any): void => {
+    this.listeners[event].forEach((listener: (a?: unknown) => void): void => {
       listener(...args);
     });
   }

@@ -17,31 +17,35 @@ const profileData = {
     changePassword: false
   },
   data: {
-    'first_name': '',
+    first_name: '',
     email: '',
     login: '',
-    'second_name': '',
+    second_name: '',
     phone: '',
-    'display_name': ''
+    display_name: ''
   }
 };
 
 export class Profile extends Block {
   avatarPopup: FilePopup;
+
   changePasswordBtn: Button;
+
   changeInfoBtn: Button;
+
   exitBtn: Button;
+
   saveBtn: Button;
 
   constructor() {
     super('div', [], profileData);
   }
 
-  render() {
+  render(): string {
     return profileTemplate(this.props);
   }
 
-  appendToHTML(query: string, block: any): void {
+  appendToHTML(query: string, block: Block): void {
     const root: HTMLElement | null = this._element.querySelector(query);
 
     if (root) {
@@ -49,7 +53,7 @@ export class Profile extends Block {
     }
   }
 
-  mounted() {
+  mounted(): void {
     this.avatarPopup = new FilePopup({
       title: '',
       label: '',
@@ -92,14 +96,14 @@ export class Profile extends Block {
     this.initShowData();
   }
 
-  updated() {
+  updated(): void {
     this.initShowData();
   }
 
-  initShowData() {
-    new AuthAPI().userInfo().then(xhr => {
+  initShowData(): void {
+    AuthAPI.userInfo().then(xhr => {
       if (xhr.status === 200) {
-        let userInfo = JSON.parse(xhr.response);
+        const userInfo = JSON.parse(xhr.response);
 
         this.setProps({ data: userInfo });
       }
@@ -112,14 +116,14 @@ export class Profile extends Block {
     this.appendToHTML('[data-component=exit-btn]', this.exitBtn);
 
     this.avatarPopup.submit = file => {
-      new UserAPI().changeProfileAvatar(file).then(xhr => {
+      UserAPI.changeProfileAvatar(file).then(xhr => {
         if (xhr.status === 200) {
-          let userInfo = JSON.stringify(xhr.response);
+          const userInfo = JSON.stringify(xhr.response);
 
           this.setProps({ data: userInfo });
         }
       });
-    }
+    };
 
     const profileBtn = this._element.querySelector('#profile-btn');
     const avatarBtn = this._element.querySelector('#avatar-btn');
@@ -143,22 +147,20 @@ export class Profile extends Block {
           changePassword: false
         };
 
-        let actionType: string | undefined = event.target.dataset.type;
+        const actionType: string | undefined = event.target.dataset.type;
 
         if (actionType === 'change-data') {
           state.changeData = true;
           this.setProps({ state });
 
           this.initChangeData();
-
         } else if (actionType === 'change-password') {
           state.changePassword = true;
           this.setProps({ state });
 
           this.initChangePassword();
-
         } else if (actionType === 'exit') {
-          new AuthAPI().logout().then((xhr: XMLHttpRequest) => {
+          AuthAPI.logout().then((xhr: XMLHttpRequest) => {
             if (xhr.status === 200) {
               app.store.isLogin = false;
 
@@ -170,19 +172,19 @@ export class Profile extends Block {
     });
   }
 
-  initChangeData() {
+  initChangeData(): void {
     this.appendToHTML('[data-component=save-btn]', this.saveBtn);
 
     const profileForm: HTMLElement | null = document.getElementById('profile-form');
     const formData = {
       formValid: {
-        'first_name': true,
-        'second_name': true,
+        first_name: true,
+        second_name: true,
         email: true,
         phone: true,
         login: true,
         password: true,
-        'display_name': true
+        display_name: true
       }
     };
     const state = {
@@ -200,20 +202,20 @@ export class Profile extends Block {
     profileForm.addEventListener('submit', event => {
       event.preventDefault();
 
-      let formFields: FormData = new FormData(profileForm);
-      let formIsValid = inputsValidate(event, formData, profileForm);
+      const formFields: FormData = new FormData(profileForm);
+      const formIsValid = inputsValidate(event, formData, profileForm);
 
       if (formIsValid && formFields) {
         const fields = {
-          'first_name': formFields.get('first_name'),
-          'second_name': formFields.get('second_name'),
-          email: formFields.get('email'),
-          login: formFields.get('login'),
-          phone: formFields.get('phone'),
-          'display_name': formFields.get('display_name')
+          first_name: String(formFields.get('first_name')),
+          second_name: String(formFields.get('second_name')),
+          email: String(formFields.get('email')),
+          login: String(formFields.get('login')),
+          phone: String(formFields.get('phone')),
+          display_name: String(formFields.get('display_name'))
         };
 
-        new UserAPI().changeProfile(fields).then((xhr: XMLHttpRequest) => {
+        UserAPI.changeProfile(fields).then((xhr: XMLHttpRequest) => {
           if (xhr.status === 200) {
             this.setProps({
               state,
@@ -225,15 +227,15 @@ export class Profile extends Block {
     });
   }
 
-  initChangePassword() {
+  initChangePassword(): void {
     this.appendToHTML('[data-component=save-btn]', this.saveBtn);
 
     const passwordForm: HTMLElement | null = document.getElementById('password-form');
     const formData = {
       formValid: {
-        'old_password': true,
-        'new_password': true,
-        'new_password_confirm': true
+        old_password: true,
+        new_password: true,
+        new_password_confirm: true
       }
     };
 
@@ -252,27 +254,27 @@ export class Profile extends Block {
     passwordForm.addEventListener('submit', event => {
       event.preventDefault();
 
-      let formFields: FormData = new FormData(passwordForm);
-      let formIsValid = inputsValidate(event, formData, passwordForm);
+      const formFields: FormData = new FormData(passwordForm);
+      const formIsValid = inputsValidate(event, formData, passwordForm);
 
       if (formIsValid && formFields) {
         if (formFields.get('new_password') !== formFields.get('new_password_confirm')) {
-          let invalidDiv = passwordForm.querySelector('[data-input-name=new_password_confirm]');
+          const invalidDiv = passwordForm.querySelector('[data-input-name=new_password_confirm]');
 
           if (!invalidDiv) return;
 
           invalidDiv.classList.toggle('hidden', false);
-          formData.formValid['new_password_confirm'] = false;
+          formData.formValid.new_password_confirm = false;
 
           return;
         }
 
         const fields = {
-          oldPassword: formFields.get('old_password'),
-          newPassword: formFields.get('new_password')
+          oldPassword: String(formFields.get('old_password')),
+          newPassword: String(formFields.get('new_password'))
         };
 
-        new UserAPI().changePassword(fields).then((xhr: XMLHttpRequest) => {
+        UserAPI.changePassword(fields).then((xhr: XMLHttpRequest) => {
           if (xhr.status === 200) {
             this.setProps({ state });
           }

@@ -6,7 +6,7 @@ import { AuthAPI } from './../api/auth-api';
 import { Router } from './../libs/router';
 import { app } from './../app';
 
-const router = new Router('#app');
+const router = new Router('');
 
 const formData = {
   formValid: {
@@ -17,6 +17,7 @@ const formData = {
 
 export class Login extends Block {
   submitBtn: Button;
+
   loginForm: HTMLElement | null;
 
   constructor() {
@@ -28,7 +29,7 @@ export class Login extends Block {
       text: 'Войти'
     });
 
-    let submitBtnContainer = this._element.querySelector('[data-component=submit-btn]');
+    const submitBtnContainer = this._element.querySelector('[data-component=submit-btn]');
 
     if (submitBtnContainer) {
       submitBtnContainer.append(this.submitBtn.getContent());
@@ -54,16 +55,16 @@ export class Login extends Block {
 
     if (!isFormElement(this.loginForm)) return;
 
-    let formFields: FormData = new FormData(this.loginForm);
-    let formIsValid = inputsValidate(event, this.props, this.loginForm);
+    const formFields: FormData = new FormData(this.loginForm);
+    const formIsValid = inputsValidate(event, this.props, this.loginForm);
 
     if (formIsValid && formFields) {
       const fields = {
-        login: formFields.get('login'),
-        password: formFields.get('password')
+        login: String(formFields.get('login')),
+        password: String(formFields.get('password'))
       };
 
-      new AuthAPI().signin(fields).then((xhr: XMLHttpRequest) => {
+      AuthAPI.signin(fields).then((xhr: XMLHttpRequest) => {
         if (xhr.status === 200) {
           app.store.isLogin = true;
 
