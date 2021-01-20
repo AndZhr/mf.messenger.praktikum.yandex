@@ -3,10 +3,7 @@ import { inputsValidate } from './../libs/form-validate';
 import { Button } from './../components/Button/index';
 import formTemplate from './templates/login.hbs';
 import { AuthAPI } from './../api/auth-api';
-import { Router } from './../libs/router';
-import { app } from './../app';
-
-const router = new Router('');
+import { app, router } from './../app';
 
 const formData = {
   formValid: {

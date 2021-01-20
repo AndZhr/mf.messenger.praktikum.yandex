@@ -5,10 +5,7 @@ import { Button } from './../components/Button/index';
 import profileTemplate from './templates/profile.hbs';
 import { AuthAPI } from './../api/auth-api';
 import { UserAPI } from './../api/user-api';
-import { Router } from './../libs/router';
-import { app } from './../app';
-
-const router = new Router('#app');
+import { app, router } from './../app';
 
 const profileData = {
   state: {
