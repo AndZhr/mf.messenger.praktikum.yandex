@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import request from '../src/libs/request';
+import request from './../src/libs/request';
 
 describe('Request', () => {
   it('Проверяем что метод определён', () => {

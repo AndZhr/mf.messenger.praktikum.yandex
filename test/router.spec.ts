@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { Router } from '../src/libs/router';
-import { Chats } from '../src/pages/chat';
+import { Router } from './../src/libs/router';
+import { Block } from './../src/libs/block';
 
 const router = new Router('body');
 
@@ -18,13 +18,13 @@ describe('Router:', () => {
     it('Проверяем что метод добавляет новый route', () => {
       expect(router.routes).to.be.empty;
 
-      router.use('/chats', Chats);
+      router.use('/chats', Block);
 
       expect(router.routes).to.be.not.empty;
     });
 
     it('Проверяем что вызов возвращает router', () => {
-      expect(router.use('/', Chats)).to.equal(router);
+      expect(router.use('/', Block)).to.equal(router);
     });
   });
 

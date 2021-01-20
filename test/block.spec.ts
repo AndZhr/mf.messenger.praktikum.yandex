@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Block } from '../src/libs/block';
+import { Block } from './../src/libs/block';
 
 describe('Block:', () => {
   class TestBlock extends Block {
@@ -17,12 +17,6 @@ describe('Block:', () => {
   describe('Метод init:', () => {
     it('Проверяем что метод определён', () => {
       expect(block.init).to.exist;
-    });
-  });
-
-  describe('Метод componentDidMount:', () => {
-    it('Проверяем что метод определён', () => {
-      expect(block.componentDidMount).to.exist;
     });
   });
 
