@@ -7,14 +7,15 @@ import { Button } from './../components/Button/index';
 import chatListTemplate from './templates/chat-list.hbs';
 import chatListContainerTemplate from './templates/chat-list-container.hbs';
 import chatTemplate from './templates/chat.hbs';
+import chatMessagesTemplate from './templates/chat-messages.hbs';
 import { ChatAPI } from './../api/chat-api';
 import { UserAPI } from './../api/user-api';
+import { AuthAPI } from './../api/auth-api';
 
 type ChatObj = {
     id: number,
     firstLetter?: string,
-    title: string,
-    messageList: SimpleObject[]
+    title: string
 };
 
 type ChatListInter = {
@@ -24,8 +25,11 @@ type ChatListInter = {
 type chatData = {
   slectedChat: number | null,
   chatName: string,
-  messageList: SimpleObject[],
   usersList: SimpleObject[]
+};
+
+type chatMessagesData = {
+  messageList: SimpleObject[]
 };
 
 const chatListData: ChatListInter = {
@@ -35,9 +39,156 @@ const chatListData: ChatListInter = {
 const chatData: chatData = {
   slectedChat: null,
   chatName: '',
-  messageList: [],
   usersList: []
 };
+
+const dateToString = (time: string): string => {
+  const date = new Date(time);
+  const formatter = new Intl.DateTimeFormat('ru', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  });
+
+  return formatter.format(date);
+};
+
+class ChatMessages extends Block {
+  userId: number;
+
+  chatId: number | null;
+
+  props: chatMessagesData;
+
+  socket: WebSocket | null;
+
+  loadMessageBtn: Button;
+
+  constructor() {
+    super('ul', ['message-feed-main__container'], { messageList: [] });
+
+    AuthAPI.userInfo().then(xhr => {
+      const { id } = JSON.parse(xhr.response);
+
+      this.userId = id;
+    });
+
+    this.chatId = null;
+
+    this.loadMessageBtn = new Button({
+      classList: 'chat-main-btn',
+      type: 'button',
+      dataType: 'load-message',
+      text: 'загрузить сообщения'
+    });
+  }
+
+  updated() {
+    const btnContainer: HTMLElement | null = this._element.querySelector('[data-component=load-message-btn]');
+
+    if (btnContainer) {
+      btnContainer.append(this.loadMessageBtn.getContent());
+
+      const loadMessage = btnContainer.querySelector('button');
+      // eslint-disable-next-line no-unused-expressions
+      loadMessage?.addEventListener('click', () => { this.loadMessages(); });
+    }
+
+    const parent = this._element.parentElement;
+
+    if (parent) {
+      parent.scrollTop = parent.scrollHeight;
+    }
+  }
+
+  loadMessages() {
+    if (this.socket && this.props.messageList.length) {
+      const { id } = this.props.messageList[this.props.messageList.length - 1];
+
+      this.socket.send(JSON.stringify({
+        content: `${id}`,
+        type: 'get old'
+      }));
+    }
+  }
+
+  changeChatId(chatId: number): void {
+    if (!chatId) {
+      this.socket = null;
+      return;
+    }
+
+    if (chatId === this.chatId) {
+      return;
+    }
+
+    this.chatId = chatId;
+    this.loadMessageBtn.show();
+    this.setProps({ messageList: [] });
+
+    ChatAPI.getChatsToken(this.chatId).then(xhr => {
+      const { token } = JSON.parse(xhr.response);
+
+      this.socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${this.userId}/${this.chatId}/${token}`);
+
+      this.socket.addEventListener('open', () => {
+        if (!this.socket) return;
+
+        this.socket.send(JSON.stringify({
+          content: '0',
+          type: 'get old'
+        }));
+      });
+
+      this.socket.addEventListener('message', event => {
+        const data = JSON.parse(event.data);
+
+        if (Array.isArray(data)) {
+          if (data.length < 20) {
+            this.loadMessageBtn.hide();
+          }
+
+          const messageList = this.props.messageList.slice();
+
+          const messageListNew = data.map(item => {
+            return {
+              id: item.id,
+              text: item.content,
+              time: dateToString(item.time),
+              yourMessageFlag: (item.user_id === this.userId)
+            };
+          });
+
+          messageList.push(...messageListNew);
+
+          this.setProps({ messageList });
+        } else {
+          if (data.type !== 'message') return;
+
+          const messageList = this.props.messageList.slice();
+
+          messageList.unshift({
+            id: data.id,
+            text: data.content,
+            time: dateToString(data.time),
+            yourMessageFlag: (data.userId === this.userId)
+          });
+
+          this.setProps({ messageList });
+        }
+      });
+
+      this.socket.addEventListener('close', () => { this.socket = null; });
+    });
+  }
+
+  render(): string {
+    return chatMessagesTemplate(this.props);
+  }
+}
 
 class ChatBody extends Block {
   inputPopup: InputPopup;
@@ -49,6 +200,8 @@ class ChatBody extends Block {
   submitBtn: Button;
 
   optionPopup: OptionsPopup;
+
+  chatMessages: ChatMessages;
 
   constructor(props: chatData) {
     super('div', ['chat-body'], props);
@@ -88,6 +241,8 @@ class ChatBody extends Block {
       text: ''
     });
 
+    this.chatMessages = new ChatMessages();
+
     this.initChat();
 
     document.addEventListener('click', (event: Event | null) => {
@@ -120,9 +275,12 @@ class ChatBody extends Block {
 
   updated() {
     this.initChat();
+
+    this.chatMessages.changeChatId(this.props.slectedChat);
   }
 
   initChat() {
+    this.appendToHTML('[data-component=chat-messages]', this.chatMessages);
     this.appendToHTML('[data-component=submit-btn]', this.submitBtn);
 
     this._element.append(this.inputPopup.getContent());
@@ -170,15 +328,18 @@ class ChatBody extends Block {
       messageForm.addEventListener('submit', event => {
         event.preventDefault();
 
-        // const formFields: FormData = new FormData(messageForm);
+        const formInput: HTMLInputElement | null = messageForm.querySelector('[name=message]');
 
-        // if (formFields && formFields.get('message')) {
-        //   const fields = {
-        //     message: formFields.get('message')
-        //   };
+        if (formInput) {
+          if (this.chatMessages.socket) {
+            this.chatMessages.socket.send(JSON.stringify({
+              content: formInput.value,
+              type: 'message'
+            }));
 
-        //   console.log(fields);
-        // }
+            formInput.value = '';
+          }
+        }
       });
     }
 
@@ -276,6 +437,39 @@ class ChatList extends Block {
 
   mounted() {
     this.requestChatList();
+
+    this._element.addEventListener('click', event => {
+      const targetElem: EventTarget | null = event.target;
+
+      if (!targetElem || !(targetElem instanceof Element)) return;
+
+      const chatListItem: HTMLElement | null = targetElem.closest('.chat-list__item');
+      let selectedChat;
+
+      if (chatListItem) {
+        event.stopPropagation();
+
+        let chatId: string | number = chatListItem.id;
+
+        if (chatId === 'add-chat') {
+          this.inputPopup.show();
+        } else {
+          chatId = parseInt(chatId, 10);
+
+          selectedChat = chatListData.chatsList.find(item => {
+            return item.id === chatId;
+          });
+        }
+      }
+
+      if (!selectedChat) return;
+
+      this.chatBody.setProps({
+        chatFirstLetter: selectedChat.firstLetter,
+        chatName: selectedChat.title,
+        slectedChat: selectedChat.id
+      });
+    });
   }
 
   updated() {
@@ -318,40 +512,6 @@ class ChatList extends Block {
 
   initChatList() {
     this._element.append(this.inputPopup.getContent());
-
-    this._element.addEventListener('click', event => {
-      const targetElem: EventTarget | null = event.target;
-
-      if (!targetElem || !(targetElem instanceof Element)) return;
-
-      const chatListItem: HTMLElement | null = targetElem.closest('.chat-list__item');
-      let selectedChat;
-
-      if (chatListItem) {
-        event.stopPropagation();
-
-        let chatId: string | number = chatListItem.id;
-
-        if (chatId === 'add-chat') {
-          this.inputPopup.show();
-        } else {
-          chatId = parseInt(chatId, 10);
-
-          selectedChat = chatListData.chatsList.find(item => {
-            return item.id === chatId;
-          });
-        }
-      }
-
-      if (!selectedChat) return;
-
-      this.chatBody.setProps({
-        chatFirstLetter: selectedChat.firstLetter,
-        chatName: selectedChat.title,
-        slectedChat: selectedChat.id,
-        messageList: selectedChat.messageList
-      });
-    });
   }
 }
 

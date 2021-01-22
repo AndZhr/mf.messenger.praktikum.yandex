@@ -1,0 +1,38 @@
+{{#each messageList}}
+  {{#if this.yourMessageFlag}}
+  <li class="message-feed-main__row message-feed-main__row_right">
+    <div class="message-feed__message-block">
+      {{#if this.imageSrc}}
+      <div class="message-feed__message-block-image">
+        <img src="{{ this.imageSrc }}" alt="">
+      </div>
+      {{/if}}
+      <div class="message-feed__message-block-text">{{ this.text }}</div>
+      <div class="message-feed__message-block-time">
+        <span>{{ this.time }}</span>
+        {{#if deliveredFlag}}
+        <span class="message-feed__message-block-status icon icon-angle-double-right-solid"></span>
+        {{/if}}
+      </div>
+    </div>
+  </li>
+  {{else}}
+  <li class="message-feed-main__row message-feed-main__row_left">
+    <div class="message-feed__message-block">
+      {{#if this.imageSrc}}
+      <div class="message-feed__message-block-image">
+        <img src="{{ this.imageSrc }}" alt="">
+      </div>
+      {{/if}}
+      <div class="message-feed__message-block-text">{{ this.text }}</div>
+      <div class="message-feed__message-block-time">
+        <span>{{ this.time }}</span>
+      </div>
+    </div>
+  </li>
+  {{/if}}
+{{/each}}
+<li
+  class="message-feed-main__row message-feed-main__row_center"
+  data-component="load-message-btn"
+></li>

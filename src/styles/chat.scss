@@ -373,7 +373,7 @@
   &__container {
     min-height: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: flex-end;
     padding: 1rem .5rem 0;
   }
@@ -400,5 +400,9 @@
     background-color: $light-blue;
     color: $white;
     border-radius: .6rem .6rem 0 .6rem;
+  }
+
+  &__row.message-feed-main__row_center {
+    justify-content: center;
   }
 }

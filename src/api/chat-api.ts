@@ -57,5 +57,13 @@ export const ChatAPI = {
         chatId
       })
     });
+  },
+  getChatsToken(chatId: number): Promise<XMLHttpRequest> {
+    return request(`https://ya-praktikum.tech/api/v2/chats/token/${chatId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8'
+      }
+    });
   }
 };

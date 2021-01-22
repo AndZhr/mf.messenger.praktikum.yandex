@@ -38,48 +38,10 @@
     </div>
   </div>
 
-  <div class="message-feed__main message-feed-main">
-    <ul class="message-feed-main__container">
-
-      {{#each messageList}}
-        {{#if this.yourMessageFlag}}
-        <li class="message-feed-main__row message-feed-main__row_right">
-          <div class="message-feed__message-block">
-            {{#if this.imageSrc}}
-            <div class="message-feed__message-block-image">
-              <img src="{{ this.imageSrc }}" alt="">
-            </div>
-            {{/if}}
-            <div class="message-feed__message-block-text">{{ this.text }}</div>
-            <div class="message-feed__message-block-time">
-              <span>{{ this.time }}</span>
-              {{#if deliveredFlag}}
-              <span class="message-feed__message-block-status icon icon-angle-double-right-solid"></span>
-              {{/if}}
-            </div>
-          </div>
-        </li>
-        {{else}}
-        <li class="message-feed-main__row message-feed-main__row_left">
-          <div class="message-feed__message-block">
-            {{#if this.imageSrc}}
-            <div class="message-feed__message-block-image">
-              <img src="{{ this.imageSrc }}" alt="">
-            </div>
-            {{/if}}
-            <div class="message-feed__message-block-text">{{ this.text }}</div>
-            <div class="message-feed__message-block-time">
-              <span>{{ this.time }}</span>
-            </div>
-          </div>
-        </li>
-        {{/if}}
-      {{/each}}
-    </ul>
-  </div>
+  <div class="message-feed__main message-feed-main" data-component="chat-messages"></div>
 
   <div class="message-feed__footer">
-    <div class="message-feed__footer-menu" data-dropdown>
+    {{!-- <div class="message-feed__footer-menu" data-dropdown>
       <button class="icon icon-paperclip-solid" data-dropdown-btn></button>
 
       <div class="message-feed__footer-dropdown message-feed__tooltip" data-dropdown-body>
@@ -96,15 +58,15 @@
               Файл
             </button>
           </li>
-          <!-- <li>
+          <li>
             <button data-btn-action="send-location">
               <span class="icon icon-map-marked-alt-solid"></span>
               Локация
             </button>
-          </li> -->
+          </li>
         </ul>
       </div>
-    </div>
+    </div> --}}
 
     <form id="message-form" class="message-feed__footer-form">
       <textarea class="message-feed__footer-input" name="message" placeholder="Введите сообщение..."></textarea>
