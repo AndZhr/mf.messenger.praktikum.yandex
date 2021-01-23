@@ -1,45 +1,30 @@
-import request from './../libs/request';
+import request from '@/libs/request';
 
 export const ChatAPI = {
   getChats(): Promise<XMLHttpRequest> {
-    return request('https://ya-praktikum.tech/api/v2/chats', {
-      method: 'GET'
-    });
+    return request('https://ya-praktikum.tech/api/v2/chats');
   },
   createChat(title: string): Promise<XMLHttpRequest> {
     return request('https://ya-praktikum.tech/api/v2/chats', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      },
       data: JSON.stringify({ title })
     });
   },
   deleteChat(chatId: number): Promise<XMLHttpRequest> {
     return request('https://ya-praktikum.tech/api/v2/chats', {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      },
       data: JSON.stringify({ chatId })
     });
   },
   getChatUsers(chatId: number): Promise<XMLHttpRequest> {
-    return request(`https://ya-praktikum.tech/api/v2/chats/${chatId}/users`, {
-      method: 'GET'
-    });
+    return request(`https://ya-praktikum.tech/api/v2/chats/${chatId}/users`);
   },
   getNewMessagesCount(chatId: number): Promise<XMLHttpRequest> {
-    return request(`https://ya-praktikum.tech/api/v2/chats/new/${chatId}`, {
-      method: 'GET'
-    });
+    return request(`https://ya-praktikum.tech/api/v2/chats/new/${chatId}`);
   },
   addUsersToChat(users: number[], chatId: number): Promise<XMLHttpRequest> {
     return request('https://ya-praktikum.tech/api/v2/chats/users', {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      },
       data: JSON.stringify({
         users,
         chatId
@@ -49,9 +34,6 @@ export const ChatAPI = {
   removeUsersFromChat(users: number[], chatId: number): Promise<XMLHttpRequest> {
     return request('https://ya-praktikum.tech/api/v2/chats/users', {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      },
       data: JSON.stringify({
         users,
         chatId
@@ -60,10 +42,7 @@ export const ChatAPI = {
   },
   getChatsToken(chatId: number): Promise<XMLHttpRequest> {
     return request(`https://ya-praktikum.tech/api/v2/chats/token/${chatId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      }
+      method: 'POST'
     });
   }
 };

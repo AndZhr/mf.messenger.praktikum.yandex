@@ -1,4 +1,4 @@
-import { Block } from './../libs/block';
+import { Block } from '@/libs/block';
 import formTemplate from './templates/error.hbs';
 
 const pageData = {

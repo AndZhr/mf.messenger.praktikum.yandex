@@ -1,9 +1,9 @@
-import { Block } from './../libs/block';
-import { inputsValidate } from './../libs/form-validate';
-import { Button } from './../components/Button/index';
+import { Block } from '@/libs/block';
+import { inputsValidate } from '@/libs/form-validate';
+import { Button } from '@/components/Button/index';
 import formTemplate from './templates/login.hbs';
-import { AuthAPI } from './../api/auth-api';
-import { app, router } from './../app';
+import { AuthAPI } from '@/api/auth-api';
+import { app, router } from '@/app';
 
 const formData = {
   formValid: {

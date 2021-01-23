@@ -14,6 +14,10 @@ export default function request(url: string, options: Options = { method: 'GET' 
     xhr.open(method, url);
     xhr.withCredentials = true;
 
+    if ((!headers || !('Content-Type' in headers)) && data) {
+      xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    }
+
     if (headers) {
       Object.entries(headers).forEach(([name, value]) => {
         xhr.setRequestHeader(name, value);

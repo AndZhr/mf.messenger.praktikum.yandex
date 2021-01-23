@@ -1,5 +1,5 @@
 import templateStr from './InputPopup.hbs';
-import { Block } from './../../libs/block';
+import { Block } from '@/libs/block';
 
 export class InputPopup extends Block {
   constructor(props: SimpleObject) {

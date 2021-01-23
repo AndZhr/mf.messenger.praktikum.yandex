@@ -1,5 +1,5 @@
 import templateStr from './FilePopup.hbs';
-import { Block } from './../../libs/block';
+import { Block } from '@/libs/block';
 
 export class FilePopup extends Block {
   file: File | null;

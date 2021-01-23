@@ -1,5 +1,5 @@
 import templateStr from './Button.hbs';
-import { Block } from './../../libs/block';
+import { Block } from '@/libs/block';
 
 export class Button extends Block {
   constructor(props: SimpleObject) {

@@ -1,16 +1,16 @@
-import { Block } from './../libs/block';
-import { FilePopup } from './../components/FilePopup/index';
-import { InputPopup } from './../components/InputPopup/index';
-import { OptionsPopup } from './../components/OptionsPopup/index';
-import { ButtonPopup } from './../components/ButtonPopup/index';
-import { Button } from './../components/Button/index';
+import { Block } from '@/libs/block';
+import { FilePopup } from '@/components/FilePopup/index';
+import { InputPopup } from '@/components/InputPopup/index';
+import { OptionsPopup } from '@/components/OptionsPopup/index';
+import { ButtonPopup } from '@/components/ButtonPopup/index';
+import { Button } from '@/components/Button/index';
 import chatListTemplate from './templates/chat-list.hbs';
 import chatListContainerTemplate from './templates/chat-list-container.hbs';
 import chatTemplate from './templates/chat.hbs';
 import chatMessagesTemplate from './templates/chat-messages.hbs';
-import { ChatAPI } from './../api/chat-api';
-import { UserAPI } from './../api/user-api';
-import { AuthAPI } from './../api/auth-api';
+import { ChatAPI } from '@/api/chat-api';
+import { UserAPI } from '@/api/user-api';
+import { AuthAPI } from '@/api/auth-api';
 
 type ChatObj = {
     id: number,
@@ -330,15 +330,13 @@ class ChatBody extends Block {
 
         const formInput: HTMLInputElement | null = messageForm.querySelector('[name=message]');
 
-        if (formInput) {
-          if (this.chatMessages.socket) {
-            this.chatMessages.socket.send(JSON.stringify({
-              content: formInput.value,
-              type: 'message'
-            }));
+        if (formInput && this.chatMessages.socket) {
+          this.chatMessages.socket.send(JSON.stringify({
+            content: formInput.value,
+            type: 'message'
+          }));
 
-            formInput.value = '';
-          }
+          formInput.value = '';
         }
       });
     }

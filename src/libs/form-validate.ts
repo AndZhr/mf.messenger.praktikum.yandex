@@ -5,16 +5,16 @@ type formDataType = {
 
 const regexpObj: {[key: string]: RegExp} = {
   email: /^\S+@\S+\.\S+$/,
-  login: /^[a-z_\-.]{6,}$/i,
+  login: /^[a-z_\-.0-9]{4,}$/i,
   first_name: /^[a-zа-яё-]+$/i,
   second_name: /^[a-zа-яё-]+$/i,
   phone: /^\+?(7|8)\d{10}$/,
-  password: /^.{8,}$/,
-  password_confirm: /^.{8,}$/,
+  password: /^.{6,}$/,
+  password_confirm: /^.{6,}$/,
   display_name: /^[a-zа-яё -]+$/i,
-  old_password: /^.{8,}$/,
-  new_password: /^.{8,}$/,
-  new_password_confirm: /^.{8,}$/
+  old_password: /^.{6,}$/,
+  new_password: /^.{6,}$/,
+  new_password_confirm: /^.{6,}$/
 };
 
 export function inputsValidate(
