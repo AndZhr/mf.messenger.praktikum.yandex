@@ -1,4 +1,4 @@
-## [Мессенджер](https://agitated-clarke-97371f.netlify.app/) &middot; ![Status](https://img.shields.io/badge/status-development-orange)
+## [Мессенджер](https://agitated-clarke-97371f.netlify.app/) &middot; ![Status](https://img.shields.io/badge/status-completed-green)
 
 Учебный проект мессенджера, с возможностью создания чатов и обмена сообщениями.
 
